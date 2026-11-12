@@ -239,41 +239,43 @@ export function HeroSection({
               </button>
             </div>
 
-            <div
-              className="absolute bottom-6 left-6 right-6 sm:right-auto sm:max-w-[330px] z-20 bg-[#FAF1F0]/94 backdrop-blur-md p-6 border border-[#2B1C1E]/15 shadow-[0_24px_48px_-16px_rgba(43,28,30,0.28)]"
-              style={{ transform: 'translateZ(42px)' }}
+          </div>
+        </div>
+
+        {/* Product info card — below image on mobile, overlaid bottom-left on sm+ */}
+        <div
+          className="sm:absolute sm:bottom-6 sm:left-6 sm:max-w-[330px] sm:z-20 bg-[#FAF1F0]/94 backdrop-blur-md p-5 sm:p-6 border border-[#2B1C1E]/15 shadow-[0_24px_48px_-16px_rgba(43,28,30,0.28)] mx-0"
+          style={{ transform: 'translateZ(42px)' }}
+        >
+          <div className="flex items-center justify-between mb-1.5">
+            <span className="text-[10px] uppercase tracking-[0.28em] text-[#9A6058]">
+              {currentHeroSlide.eyebrow}
+            </span>
+            <span className="font-mono-spec text-[9px] text-[#2B1C1E]/45">
+              {currentHeroProduct.sku}
+            </span>
+          </div>
+          <h2 className="font-serif text-xl font-normal mb-1.5 leading-snug">
+            {currentHeroSlide.title}
+          </h2>
+          <p className="text-xs text-[#2B1C1E]/70 mb-4 font-light leading-relaxed">
+            {currentHeroSlide.specLine}
+          </p>
+          <div className="flex items-center justify-between pt-2 border-t border-[#2B1C1E]/10">
+            <button
+              type="button"
+              onClick={() => onOpenQuickView(currentHeroProduct)}
+              className="ao-num text-[10px] uppercase tracking-[0.22em] font-medium underline underline-offset-4 hover:text-[#9A6058] transition-colors"
             >
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-[10px] uppercase tracking-[0.28em] text-[#9A6058]">
-                  {currentHeroSlide.eyebrow}
-                </span>
-                <span className="font-mono-spec text-[9px] text-[#2B1C1E]/45">
-                  {currentHeroProduct.sku}
-                </span>
-              </div>
-              <h2 className="font-serif text-xl font-normal mb-1.5 leading-snug">
-                {currentHeroSlide.title}
-              </h2>
-              <p className="text-xs text-[#2B1C1E]/70 mb-4 font-light leading-relaxed">
-                {currentHeroSlide.specLine}
-              </p>
-              <div className="flex items-center justify-between pt-2 border-t border-[#2B1C1E]/10">
-                <button
-                  type="button"
-                  onClick={() => onOpenQuickView(currentHeroProduct)}
-                  className="ao-num text-[10px] uppercase tracking-[0.22em] font-medium underline underline-offset-4 hover:text-[#9A6058] transition-colors"
-                >
-                  Inspect Piece — {formatPrice(currentHeroProduct.basePriceInr, currency)}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => onAddToCart(currentHeroProduct)}
-                  className="text-[10px] uppercase tracking-[0.2em] text-[#2B1C1E]/65 hover:text-[#2B1C1E]"
-                >
-                  + Bag
-                </button>
-              </div>
-            </div>
+              Inspect Piece — {formatPrice(currentHeroProduct.basePriceInr, currency)}
+            </button>
+            <button
+              type="button"
+              onClick={() => onAddToCart(currentHeroProduct)}
+              className="text-[10px] uppercase tracking-[0.2em] text-[#2B1C1E]/65 hover:text-[#2B1C1E]"
+            >
+              + Bag
+            </button>
           </div>
         </div>
       </div>
