@@ -1,0 +1,18 @@
+{
+  "name": "SHREYA & CO. — Fine Jewellery, Accessories & Lifestyle",
+  "short_name": "SHREYA & CO.",
+  "description": "Fine 18k solid gold jewellery, IGI-certified lab-grown diamond solitaires, and heirloom objects with insured Pan-India delivery.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAF1F0",
+  "theme_color": "#FAF1F0",
+  "icons": [
+    {
+      "src": "/shreya-logo-seal.png",
+      "sizes": "1072x1072",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
+

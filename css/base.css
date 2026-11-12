@@ -1,0 +1,88 @@
+/* ==========================================================================
+   SHREYA & CO. — Base Styles & Reset
+   ========================================================================== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  overflow-x: hidden;
+}
+
+img, picture, video, canvas, svg { display: block; max-width: 100%; height: auto; }
+
+a { color: inherit; text-decoration: none; }
+
+button { font: inherit; background: none; border: none; cursor: pointer; }
+
+input, textarea, select { font: inherit; color: inherit; background: none; border: none; outline: none; }
+
+ul, ol { list-style: none; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold-500);
+  outline-offset: 2px;
+}
+
+::selection { background: var(--gold-200); color: var(--ink-900); }
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+@media (min-width: 1440px) {
+  .container { padding: 0 var(--space-10); }
+}
+
+/* Typography utilities */
+.display-1 { font-size: var(--text-6xl); font-weight: 500; letter-spacing: -0.03em; }
+.display-2 { font-size: var(--text-5xl); font-weight: 500; letter-spacing: -0.02em; }
+.display-3 { font-size: var(--text-4xl); font-weight: 500; letter-spacing: -0.02em; }
+.display-4 { font-size: var(--text-3xl); font-weight: 500; }
+.headline-1 { font-size: var(--text-2xl); font-weight: 600; }
+.headline-2 { font-size: var(--text-xl); font-weight: 600; }
+.body-lg { font-size: var(--text-lg); }
+.body { font-size: var(--text-base); }
+.body-sm { font-size: var(--text-sm); }
+.caption { font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500; }
+
+.italic-gold { font-style: italic; color: var(--text-gold); }
+.text-gold { color: var(--text-gold); }
+.text-muted { color: var(--text-muted); }
+.text-center { text-align: center; }
+
+/* Section spacing */
+.section { padding: var(--space-16) 0; }
+.section-sm { padding: var(--space-12) 0; }
+.section-lg { padding: var(--space-24) 0; }
+
+/* Divider */
+.divider { height: 1px; background: var(--border-subtle); margin: var(--space-8) 0; }
+.divider-gold { height: 1px; background: linear-gradient(90deg, transparent, var(--gold-300), transparent); margin: var(--space-8) 0; }
+
+/* Visually hidden */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}

@@ -1,0 +1,265 @@
+@import "tailwindcss";
+
+.ao-root {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-feature-settings: "kern" 1, "liga" 1;
+}
+
+.ao-root .font-serif {
+  font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  letter-spacing: -0.015em;
+}
+
+.ao-root .font-mono-spec {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+}
+
+.ao-num {
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.ao-ease-image {
+  transition: transform 950ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 750ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 600ms ease;
+}
+
+.ao-preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.ao-reveal {
+  opacity: 0;
+  transform: translateY(20px) rotateX(2deg);
+  transition: opacity 850ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 950ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
+}
+
+.ao-reveal[data-visible="true"] {
+  opacity: 1;
+  transform: translateY(0) rotateX(0deg);
+}
+
+.ao-hairline-link {
+  position: relative;
+}
+
+.ao-hairline-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 1px;
+  background-color: #BC8379;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ao-hairline-link:hover::after,
+.ao-hairline-link[data-active="true"]::after {
+  transform: scaleX(1);
+}
+
+@keyframes aoFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ao-panel-enter {
+  animation: aoFadeUp 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes aoHeroCurtain {
+  from {
+    clip-path: inset(0 0 100% 0);
+    transform: scale(1.07);
+  }
+  to {
+    clip-path: inset(0 0 0% 0);
+    transform: scale(1);
+  }
+}
+
+.ao-hero-curtain {
+  animation: aoHeroCurtain 1100ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes aoKenBurns {
+  0% {
+    transform: scale(1.03) translate3d(0%, 0%, 0);
+  }
+  100% {
+    transform: scale(1.11) translate3d(-1.5%, -1%, 0);
+  }
+}
+
+.ao-ken-burns {
+  animation: aoKenBurns 14s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes aoStudioGlint {
+  0%,
+  58% {
+    transform: translateX(-135%) skewX(-18deg);
+    opacity: 0;
+  }
+  70% {
+    opacity: 0.55;
+  }
+  100% {
+    transform: translateX(230%) skewX(-18deg);
+    opacity: 0;
+  }
+}
+
+.ao-studio-glint {
+  position: absolute;
+  inset: 0;
+  width: 45%;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 248, 244, 0.26) 50%,
+    transparent 100%
+  );
+  animation: aoStudioGlint 6.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+}
+
+.ao-card-glint {
+  position: absolute;
+  inset: 0;
+  width: 55%;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 248, 244, 0.32) 50%,
+    transparent 100%
+  );
+  transform: translateX(-160%) skewX(-18deg);
+  transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.group:hover .ao-card-glint {
+  transform: translateX(240%) skewX(-18deg);
+}
+
+@keyframes aoLoaderBar {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.ao-loader-bar {
+  transform-origin: left center;
+  animation: aoLoaderBar 980ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes aoSpinSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ao-spin-slow {
+  animation: aoSpinSlow 8s linear infinite;
+}
+
+@keyframes aoHeroEnter {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ao-hero-stagger {
+  animation: aoHeroEnter 820ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.ao-reveal .ao-stagger-item {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 720ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 820ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ao-reveal[data-visible="true"] .ao-stagger-item {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ao-btn-luxe {
+  position: relative;
+  overflow: hidden;
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 320ms ease,
+    border-color 320ms ease,
+    color 320ms ease,
+    box-shadow 320ms ease;
+}
+
+.ao-btn-luxe:active {
+  transform: scale(0.982);
+}
+
+.ao-btn-luxe::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 48%;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(250, 241, 240, 0.22),
+    transparent
+  );
+  transform: translateX(-160%) skewX(-20deg);
+  transition: transform 680ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ao-btn-luxe:hover::after {
+  transform: translateX(260%) skewX(-20deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ao-ease-image,
+  .ao-panel-enter,
+  .ao-reveal,
+  .ao-reveal .ao-stagger-item,
+  .ao-hero-stagger,
+  .ao-hero-curtain,
+  .ao-ken-burns,
+  .ao-studio-glint,
+  .ao-card-glint,
+  .ao-loader-bar,
+  .ao-spin-slow,
+  .ao-btn-luxe {
+    transition: none !important;
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+}
