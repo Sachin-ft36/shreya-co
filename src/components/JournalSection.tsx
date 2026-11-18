@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ArrowUpRight, Film, Instagram } from 'lucide-react';
+import { ArrowUpRight, Film, Heart, Instagram } from 'lucide-react';
 import {
   INSTAGRAM_HANDLE,
   INSTAGRAM_URL,
@@ -9,12 +9,15 @@ import { useRevealOnScroll } from '../hooks/useRevealOnScroll';
 import { JournalArticle } from '../types/storefront';
 import { handleImgError } from '../utils/pricing';
 
+export const BEHOLD_FEED_URL = 'https://feeds.behold.so/xTNiEj5QhDcakqnsaY8Z';
+
 interface InstagramPostItem {
   id: string;
   mediaUrl: string;
   permalink: string;
   mediaType: 'IMAGE' | 'VIDEO' | 'CAROUSEL_ALBUM';
   caption: string;
+  likes?: number;
 }
 
 const DEFAULT_FEED_POSTS: InstagramPostItem[] = [
@@ -57,10 +60,11 @@ export function JournalSection({ onSelectArticle }: JournalSectionProps) {
   const { ref, visible } = useRevealOnScroll<HTMLElement>(0.12);
   const [feedPosts, setFeedPosts] = useState<InstagramPostItem[]>(DEFAULT_FEED_POSTS);
 
-  // Automatically fetch live 4 recent posts/reels if a live feed URL is provided
+  // Automatically fetch live 4 recent posts/reels from Behold Instagram Feed
   useEffect(() => {
-    const feedUrl = ((import.meta as any).env?.VITE_INSTAGRAM_FEED_URL as string | undefined)?.trim();
-    if (!feedUrl) return;
+    const feedUrl =
+      ((import.meta as any).env?.VITE_INSTAGRAM_FEED_URL as string | undefined)?.trim() ||
+      BEHOLD_FEED_URL;
 
     fetch(feedUrl)
       .then((res) => {
@@ -68,15 +72,25 @@ export function JournalSection({ onSelectArticle }: JournalSectionProps) {
         return res.json();
       })
       .then((data) => {
-        const rawItems = Array.isArray(data) ? data : data.data || data.items || [];
+        const rawItems = Array.isArray(data) ? data : data.posts || data.data || data.items || [];
         if (Array.isArray(rawItems) && rawItems.length > 0) {
-          const formatted: InstagramPostItem[] = rawItems.slice(0, 4).map((p: any, i: number) => ({
-            id: p.id || `feed-${i}`,
-            mediaUrl: p.mediaUrl || p.thumbnailUrl || p.media_url || p.images?.standard_resolution?.url || '',
-            permalink: p.permalink || p.link || INSTAGRAM_URL,
-            mediaType: (p.mediaType || p.media_type || '').toUpperCase() === 'VIDEO' ? 'VIDEO' : 'IMAGE',
-            caption: p.caption || 'Live from @shreyaco.1'
-          }));
+          const formatted: InstagramPostItem[] = rawItems.slice(0, 4).map((p: any, i: number) => {
+            const img =
+              p.sizes?.large?.mediaUrl ||
+              p.sizes?.medium?.mediaUrl ||
+              p.mediaUrl ||
+              p.thumbnailUrl ||
+              '';
+            const isVideo = (p.mediaType || p.media_type || '').toUpperCase() === 'VIDEO';
+            return {
+              id: p.id || `feed-${i}`,
+              mediaUrl: img,
+              permalink: p.permalink || p.link || INSTAGRAM_URL,
+              mediaType: isVideo ? 'VIDEO' : 'IMAGE',
+              caption: p.prunedCaption || p.caption || 'Live from @shreyaco.1',
+              likes: p.likeCount
+            };
+          });
           if (formatted.length > 0) {
             setFeedPosts(formatted);
           }
@@ -203,7 +217,15 @@ export function JournalSection({ onSelectArticle }: JournalSectionProps) {
                     <Instagram className="w-3 h-3" />
                     <span>{post.mediaType === 'VIDEO' ? 'Watch Reel' : 'View Post'}</span>
                   </span>
-                  <ArrowUpRight className="w-3.5 h-3.5 text-[#FAF1F0]" />
+                  <div className="flex items-center gap-2">
+                    {typeof post.likes === 'number' && post.likes > 0 && (
+                      <span className="inline-flex items-center gap-1 text-[9px] text-[#FAF1F0]/85 lowercase">
+                        <Heart className="w-2.5 h-2.5 fill-current text-[#BC8379]" />
+                        <span>{post.likes}</span>
+                      </span>
+                    )}
+                    <ArrowUpRight className="w-3.5 h-3.5 text-[#FAF1F0]" />
+                  </div>
                 </div>
               </div>
             </a>
