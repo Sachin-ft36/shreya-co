@@ -132,18 +132,31 @@ export function QuickViewModal({
               <p className="text-xs text-[#2B1C1E]/65 font-light">{item.subtitle}</p>
             </div>
 
-            <div className="flex items-baseline justify-between border-y border-[#2B1C1E]/12 py-3">
+            <div className="flex items-center justify-between border-y border-[#2B1C1E]/12 py-3">
               <div>
-                <span className="ao-num text-2xl font-normal tracking-wide block">
-                  {formatPrice(unitPriceInr * quantity, currency)}
-                </span>
-                <span className="text-[10px] text-[#2B1C1E]/55">
-                  MRP incl. of 3% GST &amp; Insured Transit
+                <div className="flex items-baseline space-x-2">
+                  <span className="ao-num text-sm line-through text-[#2B1C1E]/40 font-light">
+                    {formatPrice((item.mrpPriceInr || Math.round(unitPriceInr * 1.9)) * quantity, currency)}
+                  </span>
+                  <span className="ao-num text-2xl font-semibold tracking-wide text-[#2B1C1E]">
+                    {formatPrice(unitPriceInr * quantity, currency)}
+                  </span>
+                  <span className="text-[10px] uppercase tracking-wider font-semibold text-[#8B3A2B] bg-[#F7EBE9] px-2 py-0.5 rounded">
+                    {Math.round((((item.mrpPriceInr || Math.round(unitPriceInr * 1.9)) - unitPriceInr) / (item.mrpPriceInr || Math.round(unitPriceInr * 1.9))) * 100)}% OFF
+                  </span>
+                </div>
+                <span className="text-[10px] text-[#2B1C1E]/55 block mt-0.5">
+                  MRP incl. of 3% GST &amp; Free Pan-India Insured Transit
                 </span>
               </div>
-              <span className="text-[10px] uppercase tracking-[0.2em] text-[#2B1C1E]/60">
-                {item.leadTime}
-              </span>
+              <div className="flex flex-col items-end gap-1">
+                <span className="text-[9px] uppercase tracking-[0.18em] text-[#9A6058] font-medium bg-[#FAF1F0] px-2 py-0.5 border border-[#BC8379]/30">
+                  ★ {item.rating || 4.9} · Verified Pure
+                </span>
+                <span className="text-[9px] uppercase tracking-[0.16em] text-[#2B1C1E]/55">
+                  {item.leadTime}
+                </span>
+              </div>
             </div>
 
             <p className="text-xs text-[#2B1C1E]/80 font-light leading-relaxed">

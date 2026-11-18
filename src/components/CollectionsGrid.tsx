@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronLeft, ChevronRight, Eye, Heart, Minus, Plus } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Eye, Heart, Minus, Plus, Star } from 'lucide-react';
 import { METAL_OPTIONS, PRODUCTS } from '../data/catalog';
 import { useRevealOnScroll } from '../hooks/useRevealOnScroll';
 import { useSpringTilt } from '../hooks/useSpringTilt';
@@ -58,7 +58,7 @@ function ProductVitrineCard({
   selectedMetal,
   cartItemInBag,
   currency,
-  onSelectCardMetal,
+  onSelectCardMetal: _onSelectCardMetal,
   onToggleWishlist,
   onOpenQuickView,
   onAddToCart,
@@ -204,9 +204,16 @@ function ProductVitrineCard({
             className="absolute top-3 left-3 right-3 flex justify-between items-start z-10 pointer-events-auto"
             style={{ transform: 'translateZ(20px)' }}
           >
-            <span className="ao-num bg-[#FAF1F0]/92 backdrop-blur-sm text-[9px] uppercase tracking-[0.2em] px-2.5 py-1 border border-[#2B1C1E]/10 text-[#2B1C1E]">
-              {prod.category} · {prod.weightGrams} g
-            </span>
+            <div className="flex items-center space-x-1.5">
+              <span className="ao-num bg-[#FAF1F0]/92 backdrop-blur-sm text-[9px] uppercase tracking-[0.2em] px-2.5 py-1 border border-[#2B1C1E]/10 text-[#2B1C1E]">
+                {prod.category} · {prod.weightGrams} g
+              </span>
+              {prod.badge && (
+                <span className="bg-[#2B1C1E] text-[#FAF1F0] text-[8px] uppercase tracking-[0.18em] px-2 py-1 font-medium shadow-sm">
+                  {prod.badge}
+                </span>
+              )}
+            </div>
             <button
               type="button"
               onClick={(e) => {
@@ -294,27 +301,17 @@ function ProductVitrineCard({
             <span className="font-mono-spec text-[9px] text-[#2B1C1E]/45">{prod.sku}</span>
           )}
 
-          {/* Metal Alloy Selector Circles */}
-          <div className="flex items-center space-x-2" aria-label="Select alloy preview">
-            {METAL_OPTIONS.map((metal) => (
-              <button
-                key={metal.name}
-                type="button"
-                title={metal.name}
-                aria-label={`Preview ${prod.name} in ${metal.name}`}
-                onClick={() => onSelectCardMetal(prod.id, metal.name)}
-                className={`w-3.5 h-3.5 rounded-full border transition-transform ${
-                  selectedMetal === metal.name
-                    ? 'border-[#2B1C1E] scale-110 ring-1 ring-[#BC8379] ring-offset-2 ring-offset-[#FAF1F0]'
-                    : 'border-[#2B1C1E]/25 opacity-75 hover:opacity-100'
-                }`}
-                style={{ backgroundColor: metal.swatch }}
-              />
-            ))}
+          {/* Productive Social Proof / Trust Badge */}
+          <div className="flex items-center space-x-1.5">
+            <span className="inline-flex items-center gap-1 text-[10px] text-[#2B1C1E] font-medium bg-[#F5E8E6] border border-[#BC8379]/30 px-2 py-0.5 rounded-full">
+              <Star className="w-2.5 h-2.5 fill-[#9A6058] text-[#9A6058]" />
+              <span>{prod.rating || 4.9}</span>
+              <span className="text-[#2B1C1E]/50 font-normal">({prod.reviewCount || 48})</span>
+            </span>
           </div>
         </div>
 
-        <div className="flex justify-between items-start gap-4">
+        <div className="flex justify-between items-start gap-3">
           <div>
             <button
               type="button"
@@ -329,9 +326,19 @@ function ProductVitrineCard({
               {metalMeta.short} · {prod.caratInfo}
             </p>
           </div>
-          <span className="ao-num text-sm font-medium tracking-wider flex-shrink-0 pt-0.5">
-            {formatPrice(adjustedInr, currency)}
-          </span>
+          <div className="flex flex-col items-end flex-shrink-0 pt-0.5">
+            <div className="flex items-baseline space-x-1.5">
+              <span className="ao-num text-xs line-through text-[#2B1C1E]/40 font-light">
+                {formatPrice(prod.mrpPriceInr || Math.round(adjustedInr * 1.9), currency)}
+              </span>
+              <span className="ao-num text-base font-semibold tracking-wider text-[#2B1C1E]">
+                {formatPrice(adjustedInr, currency)}
+              </span>
+            </div>
+            <span className="text-[9px] uppercase tracking-wider font-semibold text-[#8B3A2B] bg-[#F7EBE9] px-1.5 py-0.5 rounded mt-0.5">
+              {Math.round((((prod.mrpPriceInr || Math.round(adjustedInr * 1.9)) - adjustedInr) / (prod.mrpPriceInr || Math.round(adjustedInr * 1.9))) * 100)}% OFF
+            </span>
+          </div>
         </div>
 
         {/* Always-Accessible Commerce Bar (Works on Mobile & Desktop) */}

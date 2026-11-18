@@ -46,6 +46,10 @@ export interface Product {
   subtitle: string;
   category: Exclude<Category, 'All'>;
   basePriceInr: number;
+  mrpPriceInr?: number;
+  rating?: number;
+  reviewCount?: number;
+  badge?: string;
   weightGrams: number;
   caratInfo: string;
   dimensions: string;
