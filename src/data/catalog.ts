@@ -9,6 +9,7 @@ import {
 export const INSTAGRAM_HANDLE = '@shreyaco.1';
 export const INSTAGRAM_URL =
   'https://www.instagram.com/shreyaco.1?rpxt=M3Q2bDJwdzRocWl2';
+export const WHATSAPP_PHONE = '919876543210'; // Replace with Sachin's 10-digit WhatsApp number (91 prefix)
 
 export const CURRENCY_CONFIG: Record<
   CurrencyCode,

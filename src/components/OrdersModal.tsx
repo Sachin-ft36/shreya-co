@@ -1,6 +1,7 @@
-import { Package, Printer, RotateCcw, Truck, X } from 'lucide-react';
+import { MessageSquare, Package, Printer, RotateCcw, Truck, X } from 'lucide-react';
 import { CurrencyCode, OrderStatusStep, PlacedOrder } from '../types/storefront';
 import { formatPrice, handleImgError } from '../utils/pricing';
+import { getWhatsAppOrderUrl, printShippingLabel } from '../utils/whatsapp';
 import { HallmarkGlyph } from './HallmarkGlyph';
 
 interface OrdersModalProps {
@@ -174,6 +175,23 @@ export function OrdersModal({
 
                 {/* Actions */}
                 <div className="flex flex-wrap gap-2.5 pt-2 border-t border-[#2B1C1E]/10 justify-end">
+                  <a
+                    href={getWhatsAppOrderUrl(order)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center space-x-1.5 bg-[#25D366] text-white px-3.5 py-2 text-[10px] uppercase tracking-[0.18em] hover:bg-[#1EBE5D] transition-colors"
+                  >
+                    <MessageSquare className="w-3 h-3" />
+                    <span>WhatsApp Slip</span>
+                  </a>
+                  <button
+                    type="button"
+                    onClick={() => printShippingLabel(order)}
+                    className="inline-flex items-center space-x-1.5 bg-[#2B1C1E] text-[#FAF1F0] px-3.5 py-2 text-[10px] uppercase tracking-[0.18em] font-medium hover:bg-[#9A6058] transition-colors"
+                  >
+                    <Printer className="w-3 h-3" />
+                    <span>Print Box Label</span>
+                  </button>
                   <button
                     type="button"
                     onClick={() => window.print()}

@@ -7,6 +7,7 @@ import {
   Landmark,
   Lock,
   MapPin,
+  MessageSquare,
   PackageCheck,
   Printer,
   ShieldCheck,
@@ -24,6 +25,7 @@ import {
 } from '../types/storefront';
 import { getEstimatedDeliveryLabel, lookupIndianPincode } from '../utils/delivery';
 import { formatPrice, handleImgError } from '../utils/pricing';
+import { getWhatsAppOrderUrl, printShippingLabel } from '../utils/whatsapp';
 import { HallmarkGlyph } from './HallmarkGlyph';
 
 interface CheckoutModalProps {
@@ -216,6 +218,12 @@ export function CheckoutModal({
       setConfirmedOrder(created);
       setIsPlacing(false);
       setStep('confirmed');
+      try {
+        const waUrl = getWhatsAppOrderUrl(created);
+        window.open(waUrl, '_blank');
+      } catch {
+        // popup blocker fallback
+      }
     }, 850);
   };
 
@@ -347,6 +355,31 @@ export function CheckoutModal({
                 </div>
               </div>
 
+              {/* WhatsApp Slip Banner */}
+              <div className="border border-[#25D366]/40 bg-[#E8F8EE] p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div className="flex items-center space-x-3">
+                  <span className="w-8 h-8 rounded-full bg-[#25D366] text-white flex items-center justify-center flex-shrink-0">
+                    <MessageSquare className="w-4 h-4" />
+                  </span>
+                  <div>
+                    <p className="text-xs font-medium text-[#111]">
+                      Courier Dispatch Slip Generated for WhatsApp
+                    </p>
+                    <p className="text-[11px] text-[#444] font-light">
+                      Order details and formatted address slip are ready to be sent to WhatsApp for packing and shipping.
+                    </p>
+                  </div>
+                </div>
+                <a
+                  href={getWhatsAppOrderUrl(confirmedOrder)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center space-x-1.5 bg-[#25D366] text-white px-4 py-2 text-[10px] uppercase tracking-[0.18em] font-medium hover:bg-[#1EBE5D] transition-colors flex-shrink-0"
+                >
+                  <span>Open WhatsApp</span>
+                </a>
+              </div>
+
               {/* Live 4-stage Tracking Preview */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-1">
                 {[
@@ -433,14 +466,31 @@ export function CheckoutModal({
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 justify-end">
+            <div className="flex flex-wrap gap-2.5 justify-end">
+              <a
+                href={getWhatsAppOrderUrl(confirmedOrder)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center space-x-2 bg-[#25D366] text-white px-5 py-3.5 text-[10px] uppercase tracking-[0.2em] font-medium hover:bg-[#1EBE5D] transition-colors shadow-sm"
+              >
+                <MessageSquare className="w-4 h-4" />
+                <span>Open in WhatsApp</span>
+              </a>
+              <button
+                type="button"
+                onClick={() => printShippingLabel(confirmedOrder)}
+                className="inline-flex items-center justify-center space-x-2 border-2 border-[#2B1C1E] bg-[#2B1C1E] text-[#FAF1F0] px-5 py-3.5 text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-[#9A6058] transition-colors"
+              >
+                <Printer className="w-4 h-4" />
+                <span>Print Box Shipping Label</span>
+              </button>
               <button
                 type="button"
                 onClick={() => window.print()}
-                className="inline-flex items-center justify-center space-x-2 border border-[#2B1C1E]/30 px-6 py-3.5 text-[10px] uppercase tracking-[0.22em] hover:border-[#2B1C1E] transition-colors"
+                className="inline-flex items-center justify-center space-x-2 border border-[#2B1C1E]/30 px-4 py-3.5 text-[10px] uppercase tracking-[0.2em] hover:border-[#2B1C1E] transition-colors"
               >
                 <Printer className="w-3.5 h-3.5" />
-                <span>Print GST Dossier</span>
+                <span>Full GST Dossier</span>
               </button>
               <button
                 type="button"
@@ -448,17 +498,17 @@ export function CheckoutModal({
                   onClose();
                   onOpenOrders();
                 }}
-                className="inline-flex items-center justify-center space-x-2 border border-[#2B1C1E] bg-[#F3E4E2] px-6 py-3.5 text-[10px] uppercase tracking-[0.22em] hover:bg-[#ECD8D6] transition-colors"
+                className="inline-flex items-center justify-center space-x-2 border border-[#2B1C1E] bg-[#F3E4E2] px-4 py-3.5 text-[10px] uppercase tracking-[0.2em] hover:bg-[#ECD8D6] transition-colors"
               >
                 <Truck className="w-3.5 h-3.5" />
-                <span>Track in My Orders</span>
+                <span>My Orders</span>
               </button>
               <button
                 type="button"
                 onClick={onClose}
-                className="inline-flex items-center justify-center bg-[#2B1C1E] text-[#FAF1F0] px-8 py-3.5 text-[10px] uppercase tracking-[0.22em] font-medium hover:bg-[#9A6058] transition-colors"
+                className="inline-flex items-center justify-center border border-[#2B1C1E]/30 px-5 py-3.5 text-[10px] uppercase tracking-[0.2em] font-medium hover:bg-[#2B1C1E] hover:text-[#FAF1F0] transition-colors"
               >
-                Continue Shopping
+                Continue
               </button>
             </div>
           </div>
