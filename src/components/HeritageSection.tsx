@@ -65,7 +65,7 @@ export function HeritageSection({ onOpenProvenance }: HeritageSectionProps) {
         The Shreya &amp; Co. Philosophy
       </h2>
       <blockquote className="font-serif text-3xl md:text-4xl lg:text-[46px] font-light leading-[1.24] text-[#2B1C1E] mb-10">
-        “True luxury is never loud. It is found in the quiet confidence of weight, the purity of origin, and a silhouette that defies transient eras.”
+        “Every piece is curated with love — aesthetic, anti-tarnish, and lightweight designs made to make everyday styling effortless.”
       </blockquote>
       <div className="w-12 h-[1px] bg-[#BC8379] mx-auto mb-6" />
       <span className="text-xs uppercase tracking-[0.3em] font-medium text-[#2B1C1E]/75 block mb-8">
@@ -77,7 +77,7 @@ export function HeritageSection({ onOpenProvenance }: HeritageSectionProps) {
         onClick={() => onOpenProvenance('provenance')}
         className="inline-flex items-center space-x-2 text-[10px] uppercase tracking-[0.26em] text-[#2B1C1E]/70 hover:text-[#9A6058] border-b border-[#2B1C1E]/25 hover:border-[#BC8379] pb-1 transition-colors"
       >
-        <span>Examine Material Provenance &amp; BIS Assay Ledger</span>
+        <span>Explore Quality Assurance &amp; Anti-Tarnish Care</span>
         <ChevronRight className="w-3.5 h-3.5" />
       </button>
     </section>

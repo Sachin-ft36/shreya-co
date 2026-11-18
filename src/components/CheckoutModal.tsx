@@ -262,7 +262,7 @@ export function CheckoutModal({
                 SHREYA &amp; CO. · Checkout
               </span>
               <span className="text-[9px] uppercase tracking-[0.24em] text-[#9A6058]">
-                Insured Pan-India Vault Delivery · BIS 750 HUID &amp; GST Invoice
+                Fast Pan-India Express Delivery · Anti-Tarnish Assurance
               </span>
             </div>
           </div>
@@ -340,7 +340,7 @@ export function CheckoutModal({
                     Thank you, {confirmedOrder.address.fullName.split(' ')[0]}
                   </h2>
                   <p className="text-xs text-[#2B1C1E]/70">
-                    Order <strong className="font-mono-spec text-[#2B1C1E]">{confirmedOrder.orderId}</strong> is confirmed. Your BIS HUID dossier &amp; 3% GST tax invoice have been logged for{' '}
+                    Order <strong className="font-mono-spec text-[#2B1C1E]">{confirmedOrder.orderId}</strong> is confirmed. Order receipt &amp; packaging details have been logged for{' '}
                     <strong className="font-medium">{confirmedOrder.address.email}</strong>.
                   </p>
                 </div>
@@ -384,9 +384,9 @@ export function CheckoutModal({
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-1">
                 {[
                   { title: 'Order Confirmed', desc: 'Allocation locked', active: true },
-                  { title: 'BIS HUID Assay', desc: 'Purity & prong QA', active: false },
-                  { title: 'Insured Dispatch', desc: 'Tamper-evident vault', active: false },
-                  { title: 'OTP Handover', desc: 'Pan-India courier', active: false }
+                  { title: 'Quality Check', desc: 'Anti-tarnish & finish QA', active: false },
+                  { title: 'Express Dispatch', desc: 'Aesthetic safe box', active: false },
+                  { title: 'Doorstep Delivery', desc: 'Pan-India courier', active: false }
                 ].map((stage, i) => (
                   <div
                     key={stage.title}
@@ -1024,7 +1024,7 @@ export function CheckoutModal({
                   <div className="border border-[#2B1C1E]/12 bg-[#F3E4E2] p-4 flex items-start space-x-3 text-xs text-[#2B1C1E]/80">
                     <ShieldCheck className="w-4 h-4 text-[#9A6058] flex-shrink-0 mt-0.5" />
                     <span>
-                      Each piece undergoes final BIS 750 HUID laser verification and ships in a tamper-evident vault parcel with full transit insurance across India.
+                      Each piece undergoes our 5-point anti-tarnish quality inspection and ships in premium keepsake packaging with express delivery across India.
                     </span>
                   </div>
 

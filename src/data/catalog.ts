@@ -24,26 +24,26 @@ export const CURRENCY_CONFIG: Record<
 export const METAL_OPTIONS: MetalOption[] = [
   {
     name: '18k Yellow Gold',
-    short: '18k Yellow',
+    short: 'Gold Finish',
     swatch: '#C9A86A',
     multiplier: 1,
-    grade: 'Au 750 · Warm Brushed',
+    grade: 'Anti-Tarnish · Gold Plated',
     filterCss: 'none'
   },
   {
     name: '18k Rose Gold',
-    short: '18k Rose',
+    short: 'Rose Gold',
     swatch: '#C89B88',
-    multiplier: 1.03,
-    grade: 'Au 750 · Rose Alloy',
+    multiplier: 1,
+    grade: 'Anti-Tarnish · Rose Gold',
     filterCss: 'sepia(0.18) saturate(1.12) hue-rotate(-8deg)'
   },
   {
     name: '950 Platinum',
-    short: '950 Platinum',
+    short: 'Silver Shine',
     swatch: '#C8C6C2',
-    multiplier: 1.18,
-    grade: 'Pt 950 · Cool Mirror',
+    multiplier: 1,
+    grade: 'Anti-Tarnish · Silver Tone',
     filterCss: 'saturate(0.35) brightness(1.03) contrast(1.04)'
   }
 ];
@@ -61,12 +61,12 @@ export const PRODUCTS: Product[] = [
     reviewCount: 68,
     badge: 'Bestseller',
     weightGrams: 8.2,
-    caratInfo: 'Silver-plated · Butterfly Charm',
+    caratInfo: 'Anti-Tarnish · Butterfly Charm',
     dimensions: '45 cm adjustable chain · 2 cm charm',
-    hallmark: 'BIS Silver · Handcrafted',
+    hallmark: 'Anti-Tarnish · Daily Wear',
     leadTime: 'Dispatches Pan-India in 2 days',
     description:
-      'A whimsical butterfly charm suspended on a dainty fine chain. Lightweight and versatile — perfect for everyday wear or gifting.',
+      'A whimsical butterfly charm suspended on a dainty fine chain. Lightweight, anti-tarnish, and versatile — perfect for everyday styling or gifting.',
     image1: '/product/Butterfly bliss necklace/1.jpeg',
     image2: '/product/Butterfly bliss necklace/2.jpeg',
     image3: '/product/Butterfly bliss necklace/3.jpeg',
@@ -89,9 +89,9 @@ export const PRODUCTS: Product[] = [
     reviewCount: 42,
     badge: 'Trending',
     weightGrams: 6.5,
-    caratInfo: 'Silver-plated · Enamel Accent',
+    caratInfo: 'Anti-Tarnish · Enamel Accent',
     dimensions: '40 cm adjustable chain · 1.5 cm charm',
-    hallmark: 'BIS Silver · Handcrafted',
+    hallmark: 'Anti-Tarnish · Skin Safe',
     leadTime: 'Dispatches Pan-India in 2 days',
     description:
       'An adorable hand-finished mouse charm necklace with subtle enamel detailing. A conversation piece for the playfully stylish.',
@@ -117,12 +117,12 @@ export const PRODUCTS: Product[] = [
     reviewCount: 54,
     badge: 'Top Rated',
     weightGrams: 9.1,
-    caratInfo: 'Silver-plated · Sea Blue Resin',
+    caratInfo: 'Anti-Tarnish · Sea Blue Resin',
     dimensions: '45 cm chain · 2.2 cm pendant',
-    hallmark: 'BIS Silver · Artisan Finished',
+    hallmark: 'Anti-Tarnish · Water Resistant',
     leadTime: 'Dispatches Pan-India in 2 days',
     description:
-      'Inspired by the calm of the open sea. A coastal pendant in sea-blue resin set within a polished silver border — effortlessly breezy.',
+      'Inspired by the calm of the open sea. A coastal pendant in sea-blue resin set within a polished border — effortlessly breezy.',
     image1: '/product/Ocean vibes necklace/1.jpeg',
     image2: '/product/Ocean vibes necklace/2.jpeg',
     image3: '/product/Ocean vibes necklace/3.jpeg',
@@ -145,12 +145,12 @@ export const PRODUCTS: Product[] = [
     reviewCount: 89,
     badge: 'Atelier Choice',
     weightGrams: 12.4,
-    caratInfo: 'Freshwater Pearls · Gold-plated Clasp',
+    caratInfo: 'Lustrous Pearls · Gold-Tone Clasp',
     dimensions: '70 cm long · Multi-wrap style',
-    hallmark: 'Natural Pearl · Certified',
+    hallmark: 'Lustrous Pearls · Certified',
     leadTime: 'Dispatches Pan-India in 3 days',
     description:
-      'A generous strand of luminous freshwater pearls designed to drape loosely like a silk scarf. Wear long, doubled, or knotted — endlessly adaptable.',
+      'A generous strand of luminous pearls designed to drape loosely like a silk scarf. Wear long, doubled, or knotted — endlessly adaptable.',
     image1: '/product/Scarf Pearl Necklace/1.jpeg',
     image2: '/product/Scarf Pearl Necklace/2.jpeg',
     image3: '/product/Scarf Pearl Necklace/3.jpeg',
@@ -175,7 +175,7 @@ export const PRODUCTS: Product[] = [
     weightGrams: 45.0,
     caratInfo: 'Premium Satin Fabric',
     dimensions: '60 cm × 60 cm',
-    hallmark: 'Handscreen Printed · Prayagraj',
+    hallmark: 'Luxury Satin Silk · Artisan Print',
     leadTime: 'Dispatches Pan-India in 2 days',
     description:
       'A silky-smooth printed scarf that doubles as a neck tie, bag accessory, or hair wrap. Part of a limited artisan print edition from our Prayagraj atelier.',

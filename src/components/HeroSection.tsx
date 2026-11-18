@@ -97,7 +97,7 @@ export function HeroSection({
             style={{ animationDelay: '1440ms' }}
             className="ao-hero-stagger pt-4 border-t border-[#2B1C1E]/10 flex flex-wrap items-center justify-between gap-2 text-[10px] uppercase tracking-[0.22em] text-[#2B1C1E]/55 max-w-md"
           >
-            <span>Prayagraj Foundry · Mumbai Assay</span>
+            <span>Anti-Tarnish · Everyday Aesthetic</span>
             <a
               href={INSTAGRAM_URL}
               target="_blank"

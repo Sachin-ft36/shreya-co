@@ -28,7 +28,7 @@ const SALONS: readonly SalonLocation[] = [
   'Private Video Viewing'
 ];
 
-/** Multi-tab Atelier dossier modal for BIS provenance, Indian sizing, Pan-India assurance & salons. */
+/** Multi-tab Atelier dossier modal for material quality, Indian sizing, Pan-India assurance & appointments. */
 export function AtelierModal({
   activeTab,
   appointmentSalon,
@@ -81,23 +81,23 @@ export function AtelierModal({
         {activeTab === 'provenance' && (
           <div className="space-y-4">
             <h3 className="font-serif text-3xl font-light">
-              Material Traceability &amp; BIS Assay
+              Material Quality &amp; Anti-Tarnish Assurance
             </h3>
             <p className="text-xs text-[#2B1C1E]/75 font-light leading-relaxed">
-              Every Shreya &amp; Co. piece is refined strictly from RJC Chain-of-Custody certified recycled 750 gold and 950 platinum, laser-inscribed with our BIS HUID six-digit purity mark and Mumbai maker’s stamp.
+              Every Shreya &amp; Co. piece is crafted with premium anti-tarnish plating on skin-safe stainless steel and brass alloys. Lead-free, nickel-free, and hypoallergenic — designed to stay radiant without turning black through everyday wear.
             </p>
             <div className="grid grid-cols-2 gap-4 pt-2 text-xs">
               <div className="border border-[#2B1C1E]/12 p-4 bg-[#F3E4E2]/60">
                 <span className="block text-[9px] uppercase tracking-[0.22em] text-[#9A6058] mb-1">
-                  Prayagraj Founder Foundry
+                  Prayagraj Creative Studio
                 </span>
-                Heritage bench craft, architectural bullion forging, and hand-finished heirloom settings.
+                Curated aesthetic designs, trendy statement silhouettes, and hand-finished details crafted with love.
               </div>
               <div className="border border-[#2B1C1E]/12 p-4 bg-[#F3E4E2]/60">
                 <span className="block text-[9px] uppercase tracking-[0.22em] text-[#9A6058] mb-1">
-                  Mumbai Assay &amp; Lab
+                  Quality Check &amp; Packaging
                 </span>
-                Optical proportion grading, Zaveri Bazaar satin finishing, and micro-pavé setting under 40× microscopy.
+                Every piece undergoes strict inspection for clasp strength, smooth edges, and shine before entering luxury gift packaging.
               </div>
             </div>
           </div>
@@ -136,20 +136,20 @@ export function AtelierModal({
         {activeTab === 'assurance' && (
           <div className="space-y-4">
             <h3 className="font-serif text-3xl font-light">
-              Insured Pan-India Transit &amp; Lifetime Care
+              Secure Pan-India Delivery &amp; Quality Care
             </h3>
             <p className="text-xs text-[#2B1C1E]/75 font-light leading-relaxed">
-              Orders dispatch from our Mumbai vault in tamper-evident cedar parcels, fully insured door-to-door across India until OTP &amp; photo-ID verified handover. Complimentary resizing and insured pickup remain open for 30 days.
+              Every order dispatches in tamper-evident protective boxes, tracked door-to-door across India. We ensure every piece reaches you in pristine condition with complete transit safety.
             </p>
             <ul className="space-y-2.5 text-xs text-[#2B1C1E]/80 font-light border-t border-[#2B1C1E]/10 pt-4">
               <li>
-                · Annual complimentary satin re-finishing and ultrasonic cleaning at Mumbai &amp; New Delhi salons.
+                · Anti-tarnish &amp; water-resistant coating to protect against sweat and daily moisture.
               </li>
               <li>
-                · 100% insured Pan-India vault delivery across 19,000+ pin codes via Sequel &amp; BlueDart Air.
+                · Fast Pan-India courier delivery across 19,000+ pin codes via BlueDart &amp; Delhivery.
               </li>
               <li>
-                · BIS 750 HUID traceability, GST invoice, and IGI grading dossier linked to your client ID.
+                · 100% skin-safe, hypoallergenic &amp; nickel-free materials suitable for sensitive skin.
               </li>
             </ul>
           </div>

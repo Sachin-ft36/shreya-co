@@ -59,7 +59,7 @@ export function SearchModal({
             id="archive-search-input"
             type="text"
             autoFocus
-            placeholder="Search solitaire, cuff, signet, BIS 750..."
+            placeholder="Search rings, necklaces, earrings, anti-tarnish..."
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             className="w-full bg-transparent border-b border-[#2B1C1E] py-4 text-2xl md:text-4xl font-serif placeholder:text-[#2B1C1E]/30 focus:outline-none focus:border-[#BC8379]"
@@ -70,7 +70,7 @@ export function SearchModal({
           <span className="text-[10px] uppercase tracking-[0.25em] text-[#2B1C1E]/45 mr-2">
             Quick Index:
           </span>
-          {['Diamond', '18k', 'Cuff', 'Signet', 'Chain', 'Earrings'].map((term) => (
+          {['Ring', 'Necklace', 'Earrings', 'Gold Finish', 'Anti-Tarnish', 'Bracelet'].map((term) => (
             <button
               key={term}
               type="button"

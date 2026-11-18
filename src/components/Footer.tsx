@@ -48,7 +48,7 @@ export function Footer({
             </div>
           </div>
           <p className="text-xs text-[#FAF1F0]/70 font-light leading-relaxed max-w-sm">
-            Consciously crafted fine jewellery and heirloom objects founded in Prayagraj for modern India. Certified BIS-hallmarked ateliers in Prayagraj and Mumbai with insured Pan-India delivery.
+            Curated aesthetic jewellery and trendy accessories crafted for everyday elegance. Anti-tarnish, water-resistant &amp; hypoallergenic fashion finds with Pan-India delivery from Prayagraj.
           </p>
           <div className="flex items-center space-x-5 pt-2">
             <a
@@ -136,7 +136,7 @@ export function Footer({
                 onClick={() => onOpenAtelierModal('provenance')}
                 className="hover:text-[#D9A79C] transition-colors"
               >
-                Our Craft &amp; Assay
+                Our Craft &amp; Materials
               </button>
             </li>
             <li>
@@ -232,7 +232,7 @@ export function Footer({
             onClick={() => onOpenAtelierModal('provenance')}
             className="hover:text-[#D9A79C] transition-colors"
           >
-            Assay &amp; Ethics
+            Materials &amp; Quality
           </button>
           <button
             type="button"

@@ -327,7 +327,7 @@ export function QuickViewModal({
                 <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-[11px]">
                   <div>
                     <span className="text-[#2B1C1E]/50 block text-[9px] uppercase tracking-[0.18em]">
-                      Stone / Bullion
+                      Material / Finish
                     </span>
                     <span className="font-light">{item.caratInfo}</span>
                   </div>
@@ -345,14 +345,14 @@ export function QuickViewModal({
                   </div>
                   <div>
                     <span className="text-[#2B1C1E]/50 block text-[9px] uppercase tracking-[0.18em]">
-                      Hallmark
+                      Quality Grade
                     </span>
                     <span className="font-light">{item.hallmark}</span>
                   </div>
                 </div>
               ) : (
                 <p className="text-[11px] text-[#2B1C1E]/75 font-light leading-relaxed">
-                  Cast from 100% certified bullion and accompanied by a signed BIS 750 HUID &amp; IGI assay dossier with GST invoice. Lifetime complimentary ultrasonic cleaning and prong tension inspection at our Mumbai and New Delhi salons.
+                  Crafted with hypoallergenic, anti-tarnish stainless steel and premium high-shine plating. Designed for comfortable daily wear and long-lasting aesthetic appeal. Includes Shreya &amp; Co. keepsake packaging.
                 </p>
               )}
             </div>

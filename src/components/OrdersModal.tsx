@@ -16,9 +16,9 @@ interface OrdersModalProps {
 
 const TRACKING_STEPS = [
   'Order Confirmed',
-  'BIS HUID Assay & QA',
-  'Insured Vault Dispatch',
-  'Delivered (OTP Verified)'
+  'Anti-Tarnish Quality Check',
+  'Express Dispatch',
+  'Delivered to Doorstep'
 ];
 
 /** Persistent Client Orders modal with live 4-stage tracking, reorder, and cancellation. */

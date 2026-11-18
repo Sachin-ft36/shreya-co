@@ -27,10 +27,10 @@ export function TrustStrip({ onOpenModal }: TrustStripProps) {
           <ShieldCheck className="w-5 h-5 text-[#9A6058] stroke-[1.35] flex-shrink-0 group-hover:-translate-y-0.5 transition-transform" />
           <div>
             <h2 className="text-[11px] uppercase tracking-[0.22em] font-medium group-hover:text-[#9A6058] transition-colors">
-              BIS HUID Lifetime Care
+              Anti-Tarnish Assurance
             </h2>
             <p className="text-xs text-[#2B1C1E]/60 font-light mt-0.5">
-              BIS 750 hallmarked gold, IGI stone dossiers &amp; annual studio polishing.
+              Water-resistant, skin-friendly &amp; long-lasting premium polish.
             </p>
           </div>
         </button>
@@ -44,10 +44,10 @@ export function TrustStrip({ onOpenModal }: TrustStripProps) {
           <Truck className="w-5 h-5 text-[#9A6058] stroke-[1.35] flex-shrink-0 group-hover:-translate-y-0.5 transition-transform" />
           <div>
             <h2 className="text-[11px] uppercase tracking-[0.22em] font-medium group-hover:text-[#9A6058] transition-colors">
-              Insured Pan-India Delivery
+              Fast Pan-India Delivery
             </h2>
             <p className="text-xs text-[#2B1C1E]/60 font-light mt-0.5">
-              Complimentary OTP-verified vault delivery across 19,000+ Indian pin codes.
+              Secure dispatch across 19,000+ Indian pin codes in luxury gift packaging.
             </p>
           </div>
         </button>
@@ -61,10 +61,10 @@ export function TrustStrip({ onOpenModal }: TrustStripProps) {
           <RefreshCw className="w-5 h-5 text-[#9A6058] stroke-[1.35] flex-shrink-0 group-hover:rotate-90 transition-transform duration-500" />
           <div>
             <h2 className="text-[11px] uppercase tracking-[0.22em] font-medium group-hover:text-[#9A6058] transition-colors">
-              Atelier Sizing &amp; Exchange
+              Easy Sizing &amp; Support
             </h2>
             <p className="text-xs text-[#2B1C1E]/60 font-light mt-0.5">
-              Complimentary 30-day bespoke resizing and insured doorstep pickup.
+              Adjustable fits &amp; direct WhatsApp order support anytime.
             </p>
           </div>
         </button>
