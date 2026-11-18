@@ -294,32 +294,32 @@ export const HERO_SLIDES: HeroSlide[] = [
   {
     id: 'plate-01',
     plateNumber: '01',
-    productId: 106,
-    eyebrow: 'Featured Artifact',
-    title: 'Cascading Gemstone Drop Necklace',
-    specLine: '18k solid yellow gold box chain with faceted citrine & sky blue topaz.',
-    image: '/hero-product-1.jpg',
-    alt: 'Shreya & Co. Autumn Winter Editorial Lookbook Plate 01 — Cascading Gemstone Drop Necklace'
+    productId: 201,
+    eyebrow: 'New Arrival',
+    title: 'Butterfly Bliss Necklace',
+    specLine: 'Delicate butterfly charm suspended on a fine adjustable silver-plated chain.',
+    image: '/product/Butterfly bliss necklace/1.jpeg',
+    alt: 'Shreya & Co. — Butterfly Bliss Necklace'
   },
   {
     id: 'plate-02',
     plateNumber: '02',
-    productId: 106,
-    eyebrow: 'Signature Pendant',
-    title: 'Pavé Infinity Ribbon Pendant',
-    specLine: 'Sculpted 18k solid yellow gold infinity motif traced with micro-pavé stones.',
-    image: '/hero-product-2.webp',
-    alt: 'Shreya & Co. Editorial Lookbook Plate 02 — Pavé Infinity Ribbon Pendant'
+    productId: 203,
+    eyebrow: 'New Arrival',
+    title: 'Ocean Vibes Necklace',
+    specLine: 'Sea-blue resin pendant in a polished silver border — effortlessly breezy.',
+    image: '/product/Ocean vibes necklace/1.jpeg',
+    alt: 'Shreya & Co. — Ocean Vibes Necklace'
   },
   {
     id: 'plate-03',
     plateNumber: '03',
-    productId: 106,
-    eyebrow: 'Botanical Atelier',
-    title: 'Five-Daisy Enamel Collar Necklace',
-    specLine: 'Five hand-enamel daisy blossoms linked along a fine 18k yellow gold chain.',
-    image: '/hero-product-3.jpg',
-    alt: 'Shreya & Co. Editorial Lookbook Plate 03 — Five-Daisy Enamel Collar Necklace'
+    productId: 204,
+    eyebrow: 'New Arrival',
+    title: 'Scarf Pearl Necklace',
+    specLine: 'Luminous freshwater pearls in a multi-wrap scarf drape style.',
+    image: '/product/Scarf Pearl Necklace/1.jpeg',
+    alt: 'Shreya & Co. — Scarf Pearl Necklace'
   }
 ];
 
