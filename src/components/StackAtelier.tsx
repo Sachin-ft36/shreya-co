@@ -50,6 +50,10 @@ export function StackAtelier({
   const { tilt, bind } = useSpringTilt({ maxDeg: 2.6, damping: 0.075 });
   const { ref, visible } = useRevealOnScroll<HTMLElement>(0.12);
 
+  if (!activeStackPiece || stackCatalog.length === 0) {
+    return null;
+  }
+
   return (
     <section
       id="atelier"

@@ -24,15 +24,17 @@ export function Vault3DShowcase({
   onOpenQuickView
 }: Vault3DShowcaseProps) {
   const { ref, visible } = useRevealOnScroll<HTMLElement>(0.12);
-  const [selectedProdId, setSelectedProdId] = useState<number>(PRODUCTS[3].id); // Solitaire Ring default
+  const [selectedProdId, setSelectedProdId] = useState<number>(PRODUCTS[0]?.id ?? 201);
   const [selectedMetal, setSelectedMetal] = useState<MetalFinish>('18k Yellow Gold');
   const [autoSpin, setAutoSpin] = useState(true);
   const [loupeZoom, setLoupeZoom] = useState(false);
   const [resetTick, setResetTick] = useState(0);
 
-  const activeProduct = PRODUCTS.find((p) => p.id === selectedProdId) || PRODUCTS[3];
+  const activeProduct = PRODUCTS.find((p) => p.id === selectedProdId) || PRODUCTS[0];
   const metalMeta = METAL_OPTIONS.find((m) => m.name === selectedMetal) || METAL_OPTIONS[0];
-  const valuationInr = getAdjustedPriceInr(activeProduct.basePriceInr, selectedMetal);
+  const valuationInr = activeProduct ? getAdjustedPriceInr(activeProduct.basePriceInr, selectedMetal) : 0;
+
+  if (!activeProduct) return null;
 
   return (
     <section

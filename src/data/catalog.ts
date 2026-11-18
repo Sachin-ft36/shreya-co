@@ -67,7 +67,10 @@ export const PRODUCTS: Product[] = [
     image3: '/product/Butterfly bliss necklace/3.jpeg',
     image4: '/product/Butterfly bliss necklace/4.jpeg',
     sizes: ['One Size'],
-    sizeLabel: 'Chain Length'
+    sizeLabel: 'Chain Length',
+    stackable: true,
+    stackRole: 'Focal Charm',
+    stackWidthMm: 2.0
   },
   {
     id: 202,
@@ -88,7 +91,10 @@ export const PRODUCTS: Product[] = [
     image3: '/product/Mouse charm necklace/3.jpeg',
     image4: '/product/Mouse charm necklace/4.jpeg',
     sizes: ['One Size'],
-    sizeLabel: 'Chain Length'
+    sizeLabel: 'Chain Length',
+    stackable: true,
+    stackRole: 'Accent Pendant',
+    stackWidthMm: 1.8
   },
   {
     id: 203,
@@ -109,7 +115,10 @@ export const PRODUCTS: Product[] = [
     image3: '/product/Ocean vibes necklace/3.jpeg',
     image4: '/product/Ocean vibes necklace/4.jpeg',
     sizes: ['One Size'],
-    sizeLabel: 'Chain Length'
+    sizeLabel: 'Chain Length',
+    stackable: true,
+    stackRole: 'Statement Drop',
+    stackWidthMm: 2.5
   },
   {
     id: 204,
@@ -130,7 +139,10 @@ export const PRODUCTS: Product[] = [
     image3: '/product/Scarf Pearl Necklace/3.jpeg',
     image4: '/product/Scarf Pearl Necklace/4.jpeg',
     sizes: ['One Size'],
-    sizeLabel: 'Chain Length'
+    sizeLabel: 'Chain Length',
+    stackable: true,
+    stackRole: 'Pearl Strand Layer',
+    stackWidthMm: 4.0
   },
   {
     id: 205,

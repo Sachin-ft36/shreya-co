@@ -64,7 +64,7 @@ export default function App() {
   // Interactive Atelier Stack Builder State
   const stackCatalog = useMemo(() => PRODUCTS.filter((p) => p.stackable), []);
   const [activeStackIndex, setActiveStackIndex] = useState(0);
-  const [stackedIds, setStackedIds] = useState<number[]>([104, 105]);
+  const [stackedIds, setStackedIds] = useState<number[]>([201, 204]);
   const [stackMetal, setStackMetal] = useState<MetalFinish>('18k Yellow Gold');
   const [stackViewMode, setStackViewMode] = useState<'editorial' | 'blueprint'>('editorial');
 
@@ -81,15 +81,15 @@ export default function App() {
     }
     return [
       {
-        key: '104|18k Yellow Gold|IN 12',
-        id: 104,
-        name: 'The Shreya Diamond Solitaire',
-        sku: 'SC-RG-001',
+        key: '201|18k Yellow Gold|One Size',
+        id: 201,
+        name: 'Butterfly Bliss Necklace',
+        sku: 'SC-NK-201',
         metal: '18k Yellow Gold',
-        size: 'IN 12',
-        unitPriceInr: 165000,
+        size: 'One Size',
+        unitPriceInr: 2499,
         quantity: 1,
-        image: PRODUCTS[3].image1
+        image: PRODUCTS[0]?.image1 || '/product/Butterfly bliss necklace/1.jpeg'
       }
     ];
   });
@@ -104,7 +104,7 @@ export default function App() {
     } catch {
       // ignore
     }
-    return [102, 105];
+    return [201, 203];
   });
 
   // Drawers, Checkout & Orders Modals
