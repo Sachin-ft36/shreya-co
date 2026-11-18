@@ -6,7 +6,6 @@ import { CartDrawer } from './components/CartDrawer';
 import { CheckoutModal } from './components/CheckoutModal';
 import { CollectionsGrid } from './components/CollectionsGrid';
 import { Footer } from './components/Footer';
-import { HallmarkGlyph } from './components/HallmarkGlyph';
 import { Header } from './components/Header';
 import { HeritageSection } from './components/HeritageSection';
 import { HeroSection } from './components/HeroSection';
@@ -564,7 +563,6 @@ export default function App() {
           aria-live="polite"
           className="fixed bottom-8 right-8 z-50 bg-[#2B1C1E] text-[#FAF1F0] px-5 py-4 border border-[#BC8379]/50 flex items-center space-x-3 shadow-[0_14px_34px_-12px_rgba(43,28,30,0.42)] ao-panel-enter max-w-md"
         >
-          <HallmarkGlyph className="w-3.5 h-3.5 text-[#D9A79C] flex-shrink-0" />
           <span className="text-[11px] uppercase tracking-[0.16em] font-normal leading-snug">
             {toastMessage}
           </span>
