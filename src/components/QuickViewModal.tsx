@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Heart, MapPin, Minus, Move3d, Plus, Ruler, X, ZoomIn, ZoomOut } from 'lucide-react';
+import { Heart, MapPin, Minus, Plus, Ruler, X } from 'lucide-react';
 import { METAL_OPTIONS } from '../data/catalog';
 import { CurrencyCode, MetalFinish, Product } from '../types/storefront';
 import { lookupIndianPincode } from '../utils/delivery';
 import { formatPrice, getAdjustedPriceInr, handleImgError } from '../utils/pricing';
-import { Jewelry3DCanvas } from './Jewelry3DCanvas';
 
 interface QuickViewModalProps {
   item: Product | null;
@@ -49,14 +48,10 @@ export function QuickViewModal({
   const [quantity, setQuantity] = useState(1);
   const [pinInput, setPinInput] = useState('400001');
   const [checkedPin, setCheckedPin] = useState('400001');
-  const [show3D, setShow3D] = useState(false);
-  const [loupe3D, setLoupe3D] = useState(false);
   const [localImgIdx, setLocalImgIdx] = useState(0);
 
   useEffect(() => {
     setQuantity(1);
-    setShow3D(false);
-    setLoupe3D(false);
     setLocalImgIdx(0);
   }, [item?.id]);
 
@@ -84,56 +79,32 @@ export function QuickViewModal({
         </button>
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 items-start">
-          {/* Left: Image Gallery + 360° (5 Cols) */}
+          {/* Left: Image Gallery (5 Cols) */}
           <div className="md:col-span-5 space-y-3">
             <div className="relative aspect-[4/5] bg-[#ECD8D6] border border-[#2B1C1E]/12 overflow-hidden">
-              {show3D ? (
-                <>
-                  <Jewelry3DCanvas
-                    category={item.category}
-                    metal={qvMetal}
-                    autoSpin={!loupe3D}
-                    loupeZoom={loupe3D}
-                    className="w-full h-full"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setLoupe3D((prev) => !prev)}
-                    className={`absolute bottom-3 right-3 px-2.5 py-1.5 text-[9px] uppercase tracking-[0.18em] border flex items-center gap-1.5 transition-colors ${
-                      loupe3D
-                        ? 'bg-[#2B1C1E] text-[#FAF1F0] border-[#2B1C1E]'
-                        : 'bg-[#FAF1F0]/90 text-[#2B1C1E] border-[#2B1C1E]/25 hover:border-[#2B1C1E]'
-                    }`}
-                  >
-                    {loupe3D ? <ZoomOut className="w-3 h-3" /> : <ZoomIn className="w-3 h-3" />}
-                    <span>{loupe3D ? '1.0× Studio' : '2.2× Loupe'}</span>
-                  </button>
-                </>
-              ) : (
-                <img
-                  src={[item.image1, item.image2, item.image3, item.image4][localImgIdx] || item.image1}
-                  alt={item.name}
-                  onError={handleImgError}
-                  style={{
-                    filter: METAL_OPTIONS.find((m) => m.name === qvMetal)?.filterCss || undefined
-                  }}
-                  className="w-full h-full object-cover ao-ease-image"
-                />
-              )}
+              <img
+                src={[item.image1, item.image2, item.image3, item.image4][localImgIdx] || item.image1}
+                alt={item.name}
+                onError={handleImgError}
+                style={{
+                  filter: METAL_OPTIONS.find((m) => m.name === qvMetal)?.filterCss || undefined
+                }}
+                className="w-full h-full object-cover ao-ease-image"
+              />
             </div>
 
-            {/* Thumbnails: up to 4 real images + 360° tab */}
-            <div className="grid grid-cols-5 gap-2">
+            {/* Thumbnails: up to 4 real photos from different angles */}
+            <div className="grid grid-cols-4 gap-2">
               {([item.image1, item.image2, item.image3, item.image4] as (string | undefined)[])
                 .filter(Boolean)
                 .map((src, idx) => (
                   <button
                     key={idx}
                     type="button"
-                    onClick={() => { setShow3D(false); setLocalImgIdx(idx); onSelectImageIdx(idx < 2 ? (idx as 0 | 1) : 0); }}
+                    onClick={() => { setLocalImgIdx(idx); onSelectImageIdx(idx < 2 ? (idx as 0 | 1) : 0); }}
                     className={`aspect-square border overflow-hidden transition-colors ${
-                      !show3D && localImgIdx === idx
-                        ? 'border-[#2B1C1E]'
+                      localImgIdx === idx
+                        ? 'border-[#2B1C1E] shadow-sm'
                         : 'border-[#2B1C1E]/15 hover:border-[#2B1C1E]/40'
                     }`}
                   >
@@ -145,18 +116,6 @@ export function QuickViewModal({
                     />
                   </button>
                 ))}
-              <button
-                type="button"
-                onClick={() => setShow3D(true)}
-                className={`aspect-square border flex flex-col items-center justify-center gap-1 transition-colors ${
-                  show3D
-                    ? 'border-[#2B1C1E] bg-[#F0DFDD]'
-                    : 'border-[#2B1C1E]/15 hover:border-[#2B1C1E]/40'
-                }`}
-              >
-                <Move3d className="w-4 h-4 text-[#9A6058]" />
-                <span className="text-[8px] uppercase tracking-[0.12em]">360°</span>
-              </button>
             </div>
           </div>
 

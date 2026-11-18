@@ -17,7 +17,6 @@ import { OrdersModal } from './components/OrdersModal';
 import { QuickViewModal } from './components/QuickViewModal';
 import { SearchModal } from './components/SearchModal';
 import { TrustStrip } from './components/TrustStrip';
-import { Vault3DShowcase } from './components/Vault3DShowcase';
 import { WishlistDrawer } from './components/WishlistDrawer';
 import { HERO_SLIDES, JOURNAL_ARTICLES, PRODUCTS } from './data/catalog';
 import {
@@ -650,13 +649,6 @@ export default function App() {
           onBuyNow={handleBuyNow}
           onUpdateCartQty={updateCartQty}
           onOpenCart={() => setCartOpen(true)}
-        />
-
-        <Vault3DShowcase
-          currency={currency}
-          onAddToCart={addToCart}
-          onBuyNow={handleBuyNow}
-          onOpenQuickView={openQuickView}
         />
 
         <HeritageSection onOpenProvenance={setAtelierModal} />

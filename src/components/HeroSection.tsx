@@ -1,12 +1,10 @@
-import { useState } from 'react';
-import { ArrowUpRight, Instagram, Move3d } from 'lucide-react';
+import { ArrowUpRight, Instagram } from 'lucide-react';
 import { HERO_SLIDES, INSTAGRAM_HANDLE, INSTAGRAM_URL } from '../data/catalog';
 import { useScrollParallax } from '../hooks/useScrollParallax';
 import { useSpringTilt } from '../hooks/useSpringTilt';
 import { CurrencyCode, MetalFinish, Product } from '../types/storefront';
 import { formatPrice, handleImgError } from '../utils/pricing';
 import { HallmarkGlyph } from './HallmarkGlyph';
-import { Jewelry3DCanvas } from './Jewelry3DCanvas';
 
 interface HeroSectionProps {
   heroSlideIdx: number;
@@ -31,7 +29,6 @@ export function HeroSection({
   onOpenQuickView,
   onAddToCart
 }: HeroSectionProps) {
-  const [hero3DMode, setHero3DMode] = useState(false);
   const currentHeroSlide = HERO_SLIDES[heroSlideIdx];
   const { ref: parallaxRef, offsetY: heroParallaxY } = useScrollParallax<HTMLElement>(26);
   const { tilt, bind } = useSpringTilt({
@@ -117,9 +114,9 @@ export function HeroSection({
         <div
           className="lg:col-span-7 relative will-change-transform"
           onMouseEnter={() => onPauseChange(true)}
-          onMouseMove={hero3DMode ? undefined : bind.onMouseMove}
+          onMouseMove={bind.onMouseMove}
           onMouseLeave={() => {
-            if (!hero3DMode) onPauseChange(false);
+            onPauseChange(false);
             bind.onMouseLeave();
           }}
           style={{
@@ -130,9 +127,7 @@ export function HeroSection({
           <div
             className="relative ao-preserve-3d will-change-transform"
             style={{
-              transform: hero3DMode
-                ? 'none'
-                : `rotateX(${tilt.rotateX.toFixed(3)}deg) rotateY(${tilt.rotateY.toFixed(3)}deg)`
+              transform: `rotateX(${tilt.rotateX.toFixed(3)}deg) rotateY(${tilt.rotateY.toFixed(3)}deg)`
             }}
           >
             {/* Plane 1 (Deep Layer): Offset Architectural Rose-Gold Frame */}
@@ -143,60 +138,48 @@ export function HeroSection({
               }}
             />
 
-            {/* Plane 2 (Mid Layer): Animated Photographic Vitrine OR Live 360° 3D Mode */}
+            {/* Plane 2 (Mid Layer): Animated Photographic Vitrine */}
             <div className="relative w-full h-[520px] md:h-[660px] overflow-hidden border border-[#2B1C1E]/15 bg-[#ECD8D6] shadow-[0_30px_60px_-24px_rgba(43,28,30,0.28)] ao-hero-curtain">
-              {hero3DMode ? (
-                <Jewelry3DCanvas
-                  category={currentHeroProduct.category}
-                  metal="18k Rose Gold"
-                  autoSpin={true}
-                  loupeZoom={false}
-                  className="w-full h-full"
-                />
-              ) : (
-                <>
-                  {HERO_SLIDES.map((slide, idx) => (
-                    <div
-                      key={slide.id}
-                      aria-hidden={idx !== heroSlideIdx}
-                      style={{ opacity: idx === heroSlideIdx ? 1 : 0 }}
-                      className={`absolute inset-0 transition-opacity duration-1000 ease-out pointer-events-none ${
-                        idx === heroSlideIdx ? 'ao-ken-burns' : ''
-                      }`}
-                    >
-                      <img
-                        src={slide.image}
-                        alt={slide.alt}
-                        loading={idx === heroSlideIdx ? 'eager' : 'lazy'}
-                        onError={handleImgError}
-                        style={{
-                          transform:
-                            idx === heroSlideIdx
-                              ? `scale(1.03) translate3d(${(tilt.shiftX * 0.9).toFixed(2)}px, ${(tilt.shiftY * 0.9).toFixed(2)}px, 0)`
-                              : 'scale(1.06)'
-                        }}
-                        className="w-full h-full object-cover object-center ao-ease-image"
-                      />
-                    </div>
-                  ))}
-
-                  {/* Periodic Champagne Diamond-Light Specular Sweep */}
-                  <div className="ao-studio-glint" aria-hidden="true" />
-
-                  {/* Pointer-reactive Studio Softbox Sheen */}
-                  <div
-                    className="absolute inset-0 pointer-events-none transition-opacity duration-500"
+              {HERO_SLIDES.map((slide, idx) => (
+                <div
+                  key={slide.id}
+                  aria-hidden={idx !== heroSlideIdx}
+                  style={{ opacity: idx === heroSlideIdx ? 1 : 0 }}
+                  className={`absolute inset-0 transition-opacity duration-1000 ease-out pointer-events-none ${
+                    idx === heroSlideIdx ? 'ao-ken-burns' : ''
+                  }`}
+                >
+                  <img
+                    src={slide.image}
+                    alt={slide.alt}
+                    loading={idx === heroSlideIdx ? 'eager' : 'lazy'}
+                    onError={handleImgError}
                     style={{
-                      background: `radial-gradient(540px circle at ${tilt.lightX.toFixed(1)}% ${tilt.lightY.toFixed(1)}%, rgba(255, 248, 244, 0.24), transparent 62%)`
+                      transform:
+                        idx === heroSlideIdx
+                          ? `scale(1.03) translate3d(${(tilt.shiftX * 0.9).toFixed(2)}px, ${(tilt.shiftY * 0.9).toFixed(2)}px, 0)`
+                          : 'scale(1.06)'
                     }}
+                    className="w-full h-full object-cover object-center ao-ease-image"
                   />
+                </div>
+              ))}
 
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#2B1C1E]/32 via-transparent to-[#2B1C1E]/10 pointer-events-none" />
-                </>
-              )}
+              {/* Periodic Champagne Diamond-Light Specular Sweep */}
+              <div className="ao-studio-glint" aria-hidden="true" />
+
+              {/* Pointer-reactive Studio Softbox Sheen */}
+              <div
+                className="absolute inset-0 pointer-events-none transition-opacity duration-500"
+                style={{
+                  background: `radial-gradient(540px circle at ${tilt.lightX.toFixed(1)}% ${tilt.lightY.toFixed(1)}%, rgba(255, 248, 244, 0.24), transparent 62%)`
+                }}
+              />
+
+              <div className="absolute inset-0 bg-gradient-to-t from-[#2B1C1E]/32 via-transparent to-[#2B1C1E]/10 pointer-events-none" />
             </div>
 
-            {/* Plane 3 (Foreground Elevated): Plate Switcher + Live 360° Toggle */}
+            {/* Plane 3 (Foreground Elevated): Plate Switcher */}
             <div
               className="absolute top-6 right-6 z-20 flex items-center bg-[#FAF1F0]/92 backdrop-blur-md border border-[#2B1C1E]/15 shadow-[0_12px_28px_-10px_rgba(43,28,30,0.22)]"
               style={{ transform: 'translateZ(34px)' }}
@@ -206,12 +189,11 @@ export function HeroSection({
                   key={slide.id}
                   type="button"
                   onClick={() => {
-                    setHero3DMode(false);
                     onPauseChange(false);
                     onSelectSlide(idx);
                   }}
                   className={`ao-num px-3.5 py-2 text-[10px] tracking-[0.2em] transition-colors ${
-                    !hero3DMode && idx === heroSlideIdx
+                    idx === heroSlideIdx
                       ? 'bg-[#2B1C1E] text-[#FAF1F0] font-medium'
                       : 'text-[#2B1C1E]/65 hover:text-[#2B1C1E]'
                   }`}
@@ -220,23 +202,6 @@ export function HeroSection({
                   {slide.plateNumber}
                 </button>
               ))}
-              <button
-                type="button"
-                onClick={() => {
-                  const next = !hero3DMode;
-                  setHero3DMode(next);
-                  onPauseChange(next);
-                }}
-                className={`px-3 py-2 border-l border-[#2B1C1E]/15 text-[10px] uppercase tracking-[0.18em] flex items-center gap-1 transition-colors ${
-                  hero3DMode
-                    ? 'bg-[#9A6058] text-[#FAF1F0] font-medium'
-                    : 'text-[#9A6058] hover:bg-[#F3E4E2]'
-                }`}
-                aria-label="Toggle live 360 degree 3D ring view"
-              >
-                <Move3d className="w-3.5 h-3.5" />
-                <span>360°</span>
-              </button>
             </div>
 
           </div>
