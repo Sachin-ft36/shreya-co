@@ -192,16 +192,6 @@ export const HERO_SLIDES: HeroSlide[] = [
   {
     id: 'plate-01',
     plateNumber: '01',
-    productId: 201,
-    eyebrow: 'New Arrival',
-    title: 'Butterfly Bliss Necklace',
-    specLine: 'Delicate butterfly charm suspended on a fine adjustable silver-plated chain.',
-    image: '/product/Butterfly bliss necklace/1.jpeg',
-    alt: 'Shreya & Co. — Butterfly Bliss Necklace'
-  },
-  {
-    id: 'plate-02',
-    plateNumber: '02',
     productId: 203,
     eyebrow: 'New Arrival',
     title: 'Ocean Vibes Necklace',
@@ -210,14 +200,24 @@ export const HERO_SLIDES: HeroSlide[] = [
     alt: 'Shreya & Co. — Ocean Vibes Necklace'
   },
   {
-    id: 'plate-03',
-    plateNumber: '03',
+    id: 'plate-02',
+    plateNumber: '02',
     productId: 204,
     eyebrow: 'New Arrival',
     title: 'Scarf Pearl Necklace',
     specLine: 'Luminous freshwater pearls in a multi-wrap scarf drape style.',
     image: '/product/Scarf Pearl Necklace/1.jpeg',
     alt: 'Shreya & Co. — Scarf Pearl Necklace'
+  },
+  {
+    id: 'plate-03',
+    plateNumber: '03',
+    productId: 201,
+    eyebrow: 'New Arrival',
+    title: 'Butterfly Bliss Necklace',
+    specLine: 'Delicate butterfly charm suspended on a fine adjustable silver-plated chain.',
+    image: '/product/Butterfly bliss necklace/1.jpeg',
+    alt: 'Shreya & Co. — Butterfly Bliss Necklace'
   }
 ];
 
