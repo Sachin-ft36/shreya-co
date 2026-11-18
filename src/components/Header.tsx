@@ -174,9 +174,11 @@ export function Header({
             aria-label={`Shopping Bag (${totalCartCount})`}
           >
             <ShoppingBag className="w-4 h-4 stroke-[1.4]" />
-            <span className="ao-num absolute -top-1 -right-1 bg-[#BC8379] text-[#FAF1F0] text-[9px] w-3.5 h-3.5 rounded-full flex items-center justify-center font-medium">
-              {totalCartCount}
-            </span>
+            {totalCartCount > 0 && (
+              <span className="ao-num absolute -top-1 -right-1 bg-[#BC8379] text-[#FAF1F0] text-[9px] w-3.5 h-3.5 rounded-full flex items-center justify-center font-medium">
+                {totalCartCount}
+              </span>
+            )}
           </button>
         </div>
       </div>

@@ -59,10 +59,11 @@ export default function App() {
   const [sortBy, setSortBy] = useState<SortOption>('curated');
   const [cardMetals, setCardMetals] = useState<Record<number, MetalFinish>>({});
 
-  // Persistent Commerce State (Cart & Wishlist)
+  // Persistent Commerce State (Cart & Wishlist) — Empty by default (No dummy data)
   const [cartItems, setCartItems] = useState<CartItem[]>(() => {
     try {
-      const saved = localStorage.getItem('sc_cart_v3');
+      localStorage.removeItem('sc_cart_v3');
+      const saved = localStorage.getItem('sc_cart_v4');
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed)) return parsed;
@@ -70,24 +71,13 @@ export default function App() {
     } catch {
       // ignore storage failure
     }
-    return [
-      {
-        key: '201|18k Yellow Gold|One Size',
-        id: 201,
-        name: 'Butterfly Bliss Necklace',
-        sku: 'SC-NK-201',
-        metal: '18k Yellow Gold',
-        size: 'One Size',
-        unitPriceInr: 2499,
-        quantity: 1,
-        image: PRODUCTS[0]?.image1 || '/product/Butterfly bliss necklace/1.jpeg'
-      }
-    ];
+    return [];
   });
 
   const [wishlist, setWishlist] = useState<number[]>(() => {
     try {
-      const saved = localStorage.getItem('sc_wishlist_v3');
+      localStorage.removeItem('sc_wishlist_v3');
+      const saved = localStorage.getItem('sc_wishlist_v4');
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed)) return parsed;
@@ -95,7 +85,7 @@ export default function App() {
     } catch {
       // ignore
     }
-    return [201, 203];
+    return [];
   });
 
   // Drawers, Checkout & Orders Modals
@@ -175,7 +165,7 @@ export default function App() {
   // Persist Cart, Wishlist, Orders & Address safely
   useEffect(() => {
     try {
-      localStorage.setItem('sc_cart_v3', JSON.stringify(cartItems));
+      localStorage.setItem('sc_cart_v4', JSON.stringify(cartItems));
     } catch {
       // noop
     }
@@ -183,7 +173,7 @@ export default function App() {
 
   useEffect(() => {
     try {
-      localStorage.setItem('sc_wishlist_v3', JSON.stringify(wishlist));
+      localStorage.setItem('sc_wishlist_v4', JSON.stringify(wishlist));
     } catch {
       // noop
     }
