@@ -16,11 +16,10 @@ import { MobileNavDrawer } from './components/MobileNavDrawer';
 import { OrdersModal } from './components/OrdersModal';
 import { QuickViewModal } from './components/QuickViewModal';
 import { SearchModal } from './components/SearchModal';
-import { StackAtelier } from './components/StackAtelier';
 import { TrustStrip } from './components/TrustStrip';
 import { Vault3DShowcase } from './components/Vault3DShowcase';
 import { WishlistDrawer } from './components/WishlistDrawer';
-import { HERO_SLIDES, JOURNAL_ARTICLES, METAL_OPTIONS, PRODUCTS } from './data/catalog';
+import { HERO_SLIDES, JOURNAL_ARTICLES, PRODUCTS } from './data/catalog';
 import {
   AtelierDossierTab,
   CartItem,
@@ -60,13 +59,6 @@ export default function App() {
   const [selectedCategory, setSelectedCategory] = useState<Category>('All');
   const [sortBy, setSortBy] = useState<SortOption>('curated');
   const [cardMetals, setCardMetals] = useState<Record<number, MetalFinish>>({});
-
-  // Interactive Atelier Stack Builder State
-  const stackCatalog = useMemo(() => PRODUCTS.filter((p) => p.stackable), []);
-  const [activeStackIndex, setActiveStackIndex] = useState(0);
-  const [stackedIds, setStackedIds] = useState<number[]>([201, 204]);
-  const [stackMetal, setStackMetal] = useState<MetalFinish>('18k Yellow Gold');
-  const [stackViewMode, setStackViewMode] = useState<'editorial' | 'blueprint'>('editorial');
 
   // Persistent Commerce State (Cart & Wishlist)
   const [cartItems, setCartItems] = useState<CartItem[]>(() => {
@@ -233,7 +225,7 @@ export default function App() {
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       setScrollProgress(docHeight > 0 ? Math.min(100, (scrollY / docHeight) * 100) : 0);
 
-      const sectionIds = ['collections', 'atelier', 'heritage', 'journal'];
+      const sectionIds = ['collections', 'heritage', 'journal'];
       for (const id of sectionIds) {
         const el = document.getElementById(id);
         if (!el) continue;
@@ -420,52 +412,6 @@ export default function App() {
     });
   };
 
-  const toggleStackInclusion = (id: number) => {
-    setStackedIds((prev) => {
-      if (prev.includes(id)) {
-        if (prev.length === 1) {
-          triggerToast('Retain at least one piece in your atelier composition');
-          return prev;
-        }
-        return prev.filter((item) => item !== id);
-      }
-      return [...prev, id];
-    });
-  };
-
-  const addFullStackToBag = () => {
-    const selectedPieces = stackCatalog.filter((p) => stackedIds.includes(p.id));
-    selectedPieces.forEach((p) => {
-      const defaultSize = p.sizes.includes('IN 12') ? 'IN 12' : p.sizes[0];
-      const unitPriceInr = getAdjustedPriceInr(p.basePriceInr, stackMetal);
-      const key = `${p.id}|${stackMetal}|${defaultSize}`;
-      setCartItems((prev) => {
-        const existing = prev.find((item) => item.key === key);
-        if (existing) {
-          return prev.map((item) =>
-            item.key === key ? { ...item, quantity: item.quantity + 1 } : item
-          );
-        }
-        return [
-          ...prev,
-          {
-            key,
-            id: p.id,
-            name: p.name,
-            sku: p.sku,
-            metal: stackMetal,
-            size: defaultSize,
-            unitPriceInr,
-            quantity: 1,
-            image: p.image1
-          }
-        ];
-      });
-    });
-    setCartOpen(true);
-    triggerToast(`Added ${selectedPieces.length}-piece ${stackMetal} stack to bag`);
-  };
-
   const jumpToCollectionCategory = (cat: Category) => {
     setSelectedCategory(cat);
     const el = document.getElementById('collections');
@@ -523,16 +469,6 @@ export default function App() {
   );
   const checkoutDiscountInr = Math.round((checkoutSubtotalInr * appliedDiscountPct) / 100);
   const checkoutTotalInr = Math.max(0, checkoutSubtotalInr - checkoutDiscountInr);
-
-  // Derived Stack Summary
-  const activeStackPiece = stackCatalog[activeStackIndex] || stackCatalog[0];
-  const activeStackMetalMeta = METAL_OPTIONS.find((m) => m.name === stackMetal) || METAL_OPTIONS[0];
-  const selectedStackPieces = stackCatalog.filter((p) => stackedIds.includes(p.id));
-  const stackTotalInr = selectedStackPieces.reduce(
-    (sum, p) => sum + getAdjustedPriceInr(p.basePriceInr, stackMetal),
-    0
-  );
-  const stackTotalGrams = selectedStackPieces.reduce((sum, p) => sum + p.weightGrams, 0);
 
   // Hero Active Slide
   const currentHeroSlide = HERO_SLIDES[heroSlideIdx];
@@ -720,27 +656,6 @@ export default function App() {
           currency={currency}
           onAddToCart={addToCart}
           onBuyNow={handleBuyNow}
-          onOpenQuickView={openQuickView}
-        />
-
-        <StackAtelier
-          stackCatalog={stackCatalog}
-          activeStackIndex={activeStackIndex}
-          activeStackPiece={activeStackPiece}
-          activeStackMetalMeta={activeStackMetalMeta}
-          selectedStackPieces={selectedStackPieces}
-          stackedIds={stackedIds}
-          stackMetal={stackMetal}
-          stackViewMode={stackViewMode}
-          stackTotalInr={stackTotalInr}
-          stackTotalGrams={stackTotalGrams}
-          currency={currency}
-          onSelectStackIndex={setActiveStackIndex}
-          onToggleInclusion={toggleStackInclusion}
-          onSelectStackMetal={setStackMetal}
-          onSelectViewMode={setStackViewMode}
-          onAddFullStackToBag={addFullStackToBag}
-          onAddSingleToBag={addToCart}
           onOpenQuickView={openQuickView}
         />
 

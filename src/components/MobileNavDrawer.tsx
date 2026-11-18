@@ -59,9 +59,6 @@ export function MobileNavDrawer({
             <a href="#collections" onClick={onClose} className="hover:text-[#9A6058]">
               Collections
             </a>
-            <a href="#atelier" onClick={onClose} className="hover:text-[#9A6058]">
-              The Atelier Stack
-            </a>
             <a href="#heritage" onClick={onClose} className="hover:text-[#9A6058]">
               Heritage
             </a>

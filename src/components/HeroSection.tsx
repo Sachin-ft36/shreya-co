@@ -89,10 +89,10 @@ export function HeroSection({
               <ArrowUpRight className="w-4 h-4 ml-2 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </a>
             <a
-              href="#atelier"
+              href="#heritage"
               className="ao-btn-luxe inline-flex items-center justify-center border border-[#2B1C1E]/30 px-8 py-4 text-[11px] uppercase tracking-[0.24em] font-medium hover:border-[#2B1C1E] hover:bg-[#F0DFDD]/50"
             >
-              The Atelier Stack
+              The Heritage
             </a>
           </div>
 

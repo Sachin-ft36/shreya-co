@@ -66,13 +66,6 @@ export function Header({
               Collections
             </a>
             <a
-              href="#atelier"
-              data-active={activeSection === 'atelier'}
-              className="ao-hairline-link hover:text-[#2B1C1E] transition-colors"
-            >
-              The Atelier
-            </a>
-            <a
               href="#heritage"
               data-active={activeSection === 'heritage'}
               className="ao-hairline-link hover:text-[#2B1C1E] transition-colors"
