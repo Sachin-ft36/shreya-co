@@ -11,6 +11,7 @@ interface Jewelry3DCanvasProps {
   loupeZoom: boolean;
   resetSignal?: number;
   className?: string;
+  imageUrl?: string;
 }
 
 const METAL_TINTS: Record<MetalFinish, { color: number; roughness: number }> = {
@@ -43,11 +44,12 @@ function createBrilliantDiamond(radius: number, material: THREE.Material): THREE
   return gem;
 }
 
-/** Builds procedural fine-jewellery geometry tailored to each catalogue category. */
+/** Builds procedural fine-jewellery geometry or realistic transparent 3D showcase. */
 function buildJewelrySculpture(
   category: Exclude<Category, 'All'>,
   alloyMat: THREE.MeshPhysicalMaterial,
-  diamondMat: THREE.MeshPhysicalMaterial
+  diamondMat: THREE.MeshPhysicalMaterial,
+  imageUrl?: string
 ): THREE.Group {
   const root = new THREE.Group();
 
@@ -160,27 +162,58 @@ function buildJewelrySculpture(
     return root;
   }
 
-  // Necklaces: collar arc with diamond bar pendant
-  const collarPts: THREE.Vector3[] = [];
-  for (let i = 0; i <= 48; i += 1) {
-    const t = -Math.PI * 0.72 + (i / 48) * Math.PI * 1.44;
-    collarPts.push(new THREE.Vector3(Math.sin(t) * 1.18, Math.cos(t) * 0.92 + 0.38, 0));
-  }
-  const chainCurve = new THREE.CatmullRomCurve3(collarPts);
-  const chain = new THREE.Mesh(new THREE.TubeGeometry(chainCurve, 80, 0.04, 16, false), alloyMat);
-  root.add(chain);
+  // Real Transparent Atelier Necklace
+  const textureLoader = new THREE.TextureLoader();
+  const texture = textureLoader.load(imageUrl || '/3d image/ocean vibe.png');
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.generateMipmaps = true;
+  texture.minFilter = THREE.LinearMipmapLinearFilter;
 
-  const bar = new THREE.Mesh(new THREE.BoxGeometry(1.15, 0.14, 0.11), alloyMat);
-  bar.position.set(0, -0.58, 0.04);
-  root.add(bar);
+  const w = 2.25;
+  const h = 2.18;
 
-  for (let i = -3; i <= 3; i += 1) {
-    const stone = createBrilliantDiamond(i === 0 ? 0.16 : 0.085, diamondMat);
-    stone.rotation.x = Math.PI / 2;
-    stone.position.set(i * 0.16, -0.58, 0.12);
-    root.add(stone);
+  // Front facing plane
+  const frontGeo = new THREE.PlaneGeometry(w, h);
+  const frontMat = new THREE.MeshPhysicalMaterial({
+    map: texture,
+    transparent: true,
+    alphaTest: 0.04,
+    roughness: 0.25,
+    metalness: 0.15,
+    clearcoat: 0.5,
+    clearcoatRoughness: 0.1,
+    side: THREE.FrontSide,
+    depthWrite: true
+  });
+  const frontMesh = new THREE.Mesh(frontGeo, frontMat);
+  frontMesh.position.z = 0.015;
+  frontMesh.castShadow = true;
+  root.add(frontMesh);
+
+  // Back facing plane (mirrored UVs so it looks oriented correctly from reverse)
+  const backGeo = new THREE.PlaneGeometry(w, h);
+  const uvs = backGeo.attributes.uv;
+  for (let i = 0; i < uvs.count; i++) {
+    uvs.setX(i, 1 - uvs.getX(i));
   }
-  root.rotation.x = -0.12;
+  uvs.needsUpdate = true;
+
+  const backMat = new THREE.MeshPhysicalMaterial({
+    map: texture,
+    transparent: true,
+    alphaTest: 0.04,
+    roughness: 0.3,
+    metalness: 0.15,
+    clearcoat: 0.35,
+    clearcoatRoughness: 0.15,
+    side: THREE.BackSide,
+    depthWrite: true
+  });
+  const backMesh = new THREE.Mesh(backGeo, backMat);
+  backMesh.position.z = -0.015;
+  root.add(backMesh);
+
+  root.position.set(0, 0.08, 0);
   return root;
 }
 
@@ -194,7 +227,8 @@ export function Jewelry3DCanvas({
   autoSpin,
   loupeZoom,
   resetSignal = 0,
-  className = 'h-[420px]'
+  className = 'h-[420px]',
+  imageUrl = '/3d image/ocean vibe.png'
 }: Jewelry3DCanvasProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const alloyMatRef = useRef<THREE.MeshPhysicalMaterial | null>(null);
@@ -324,7 +358,7 @@ export function Jewelry3DCanvas({
       flatShading: true
     });
 
-    const sculpture = buildJewelrySculpture(category, alloyMat, diamondMat);
+    const sculpture = buildJewelrySculpture(category, alloyMat, diamondMat, imageUrl);
     scene.add(sculpture);
 
     let rafId = 0;
@@ -382,7 +416,7 @@ export function Jewelry3DCanvas({
       diamondMat.dispose();
       renderer.dispose();
     };
-  }, [category]);
+  }, [category, imageUrl]);
 
   // Real-time alloy material tinting without recreating WebGL scene
   useEffect(() => {
