@@ -1,4 +1,5 @@
-import { Eye, Heart, Minus, Plus } from 'lucide-react';
+import { useState } from 'react';
+import { ChevronLeft, ChevronRight, Eye, Heart, Minus, Plus } from 'lucide-react';
 import { METAL_OPTIONS, PRODUCTS } from '../data/catalog';
 import { useRevealOnScroll } from '../hooks/useRevealOnScroll';
 import { useSpringTilt } from '../hooks/useSpringTilt';
@@ -67,10 +68,33 @@ function ProductVitrineCard({
 }: ProductVitrineCardProps) {
   const { tilt, bind } = useSpringTilt({ maxDeg: 4.4, damping: 0.085 });
   const { ref, visible } = useRevealOnScroll<HTMLElement>(0.1);
+  const [currentImgIdx, setCurrentImgIdx] = useState(0);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
 
+  const images = [prod.image1, prod.image2, prod.image3, prod.image4].filter(Boolean) as string[];
   const metalMeta = METAL_OPTIONS.find((m) => m.name === selectedMetal) || METAL_OPTIONS[0];
   const adjustedInr = getAdjustedPriceInr(prod.basePriceInr, selectedMetal);
   const defaultSize = prod.sizes[0];
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStart === null) return;
+    const touchEnd = e.changedTouches[0].clientX;
+    const diff = touchStart - touchEnd;
+    if (Math.abs(diff) > 40) {
+      if (diff > 0) {
+        // Swiped left -> next angle
+        setCurrentImgIdx((prev) => (prev < images.length - 1 ? prev + 1 : 0));
+      } else {
+        // Swiped right -> prev angle
+        setCurrentImgIdx((prev) => (prev > 0 ? prev - 1 : images.length - 1));
+      }
+    }
+    setTouchStart(null);
+  };
 
   return (
     <article
@@ -81,12 +105,14 @@ function ProductVitrineCard({
     >
       <div
         {...bind}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
         onClick={() => onOpenQuickView(prod, selectedMetal)}
         style={{ perspective: '1050px' }}
-        className="mb-5 cursor-pointer"
+        className="mb-4 cursor-pointer"
       >
         <div
-          className="relative aspect-[4/5] bg-[#ECD8D6] border border-[#2B1C1E]/15 ao-preserve-3d will-change-transform transition-shadow duration-500 group-hover:shadow-[0_24px_46px_-18px_rgba(43,28,30,0.28)]"
+          className="relative aspect-[4/3] sm:aspect-[4/5] max-h-[300px] sm:max-h-none bg-[#ECD8D6] border border-[#2B1C1E]/15 ao-preserve-3d will-change-transform transition-shadow duration-500 group-hover:shadow-[0_24px_46px_-18px_rgba(43,28,30,0.28)]"
           style={{
             transform: `rotateX(${tilt.rotateX.toFixed(3)}deg) rotateY(${tilt.rotateY.toFixed(3)}deg)`
           }}
@@ -94,24 +120,73 @@ function ProductVitrineCard({
           {/* Overflow-clipped photo chamber */}
           <div className="relative w-full h-full overflow-hidden">
             <img
-              src={prod.image1}
-              alt={`${prod.name} — ${prod.subtitle} by Shreya & Co.`}
+              key={currentImgIdx}
+              src={images[currentImgIdx] || prod.image1}
+              alt={`${prod.name} — Angle 0${currentImgIdx + 1}`}
               loading="lazy"
               onError={handleImgError}
               style={{
                 filter: metalMeta.filterCss,
                 transform: `scale(1.02) translate3d(${(tilt.shiftX * 0.45).toFixed(2)}px, ${(tilt.shiftY * 0.45).toFixed(2)}px, 0)`
               }}
-              className="w-full h-full object-cover ao-ease-image group-hover:opacity-0"
+              className="w-full h-full object-cover ao-ease-image"
             />
-            <img
-              src={prod.image2}
-              alt={`${prod.name} alternate proportion view`}
-              loading="lazy"
-              onError={handleImgError}
-              style={{ filter: metalMeta.filterCss }}
-              className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 group-hover:scale-105 ao-ease-image"
-            />
+
+            {/* Left / Right Angle Switcher Arrows */}
+            {images.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  aria-label="Previous angle"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setCurrentImgIdx((prev) => (prev > 0 ? prev - 1 : images.length - 1));
+                  }}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-7 h-7 rounded-full bg-[#FAF1F0]/90 backdrop-blur-sm border border-[#2B1C1E]/20 flex items-center justify-center text-[#2B1C1E] hover:bg-[#FAF1F0] active:scale-90 transition-all shadow-sm"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <button
+                  type="button"
+                  aria-label="Next angle"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setCurrentImgIdx((prev) => (prev < images.length - 1 ? prev + 1 : 0));
+                  }}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-7 h-7 rounded-full bg-[#FAF1F0]/90 backdrop-blur-sm border border-[#2B1C1E]/20 flex items-center justify-center text-[#2B1C1E] hover:bg-[#FAF1F0] active:scale-90 transition-all shadow-sm"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </>
+            )}
+
+            {/* Angle Indicator Dots Pill */}
+            {images.length > 1 && (
+              <div
+                className="absolute bottom-2.5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 bg-[#FAF1F0]/92 backdrop-blur-md px-2.5 py-1 rounded-full border border-[#2B1C1E]/15 shadow-sm"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {images.map((_, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    aria-label={`View angle ${idx + 1}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setCurrentImgIdx(idx);
+                    }}
+                    className={`transition-all duration-200 ${
+                      currentImgIdx === idx
+                        ? 'w-4 h-1.5 rounded-full bg-[#2B1C1E]'
+                        : 'w-1.5 h-1.5 rounded-full bg-[#2B1C1E]/30 hover:bg-[#2B1C1E]/60'
+                    }`}
+                  />
+                ))}
+                <span className="font-mono-spec text-[8px] text-[#2B1C1E]/60 ml-0.5">
+                  0{currentImgIdx + 1}/0{images.length}
+                </span>
+              </div>
+            )}
 
             {/* Soft glass specular reflection following pointer + diagonal luxury glint */}
             <div className="ao-card-glint" aria-hidden="true" />
@@ -126,7 +201,7 @@ function ProductVitrineCard({
 
           {/* Elevated foreground plaques */}
           <div
-            className="absolute top-4 left-4 right-4 flex justify-between items-start z-10 pointer-events-auto"
+            className="absolute top-3 left-3 right-3 flex justify-between items-start z-10 pointer-events-auto"
             style={{ transform: 'translateZ(20px)' }}
           >
             <span className="ao-num bg-[#FAF1F0]/92 backdrop-blur-sm text-[9px] uppercase tracking-[0.2em] px-2.5 py-1 border border-[#2B1C1E]/10 text-[#2B1C1E]">
@@ -181,8 +256,45 @@ function ProductVitrineCard({
         </div>
       </div>
 
-      <div className="space-y-2.5">
-        <div className="flex items-center justify-between">
+      <div className="space-y-2">
+        <div className="flex items-center justify-between gap-2 pt-0.5">
+          {/* Angle Mini-Thumbnails on Card */}
+          {images.length > 1 ? (
+            <div className="flex items-center space-x-1.5">
+              <span className="text-[9px] uppercase tracking-[0.18em] text-[#9A6058] font-medium">
+                Angles:
+              </span>
+              <div className="flex space-x-1">
+                {images.map((img, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setCurrentImgIdx(i);
+                    }}
+                    className={`w-6 h-7 sm:w-7 sm:h-8 border overflow-hidden transition-all ${
+                      currentImgIdx === i
+                        ? 'border-[#2B1C1E] ring-1 ring-[#2B1C1E] scale-105 shadow-sm'
+                        : 'border-[#2B1C1E]/20 opacity-60 hover:opacity-100'
+                    }`}
+                    title={`Angle ${i + 1}`}
+                  >
+                    <img
+                      src={img}
+                      alt={`Angle ${i + 1}`}
+                      onError={handleImgError}
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <span className="font-mono-spec text-[9px] text-[#2B1C1E]/45">{prod.sku}</span>
+          )}
+
+          {/* Metal Alloy Selector Circles */}
           <div className="flex items-center space-x-2" aria-label="Select alloy preview">
             {METAL_OPTIONS.map((metal) => (
               <button
@@ -200,7 +312,6 @@ function ProductVitrineCard({
               />
             ))}
           </div>
-          <span className="font-mono-spec text-[9px] text-[#2B1C1E]/45">{prod.sku}</span>
         </div>
 
         <div className="flex justify-between items-start gap-4">
@@ -301,7 +412,7 @@ export function CollectionsGrid({
     <section
       id="collections"
       aria-labelledby="collections-heading"
-      className="py-24 md:py-32 px-6 md:px-12 max-w-7xl mx-auto"
+      className="py-16 md:py-32 px-4 sm:px-6 md:px-12 max-w-7xl mx-auto"
     >
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 space-y-4 md:space-y-0">
         <div>

@@ -152,3 +152,4 @@ export function printShippingLabel(order: PlacedOrder) {
   `);
   win.document.close();
 }
+
