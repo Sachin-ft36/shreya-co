@@ -31,7 +31,7 @@ export function QuickViewModal({
   item,
   qvMetal,
   qvSize,
-  qvImageIdx,
+  qvImageIdx: _qvImageIdx,
   qvTab,
   showSizeGuide,
   wishlist,
@@ -51,11 +51,13 @@ export function QuickViewModal({
   const [checkedPin, setCheckedPin] = useState('400001');
   const [show3D, setShow3D] = useState(false);
   const [loupe3D, setLoupe3D] = useState(false);
+  const [localImgIdx, setLocalImgIdx] = useState(0);
 
   useEffect(() => {
     setQuantity(1);
     setShow3D(false);
     setLoupe3D(false);
+    setLocalImgIdx(0);
   }, [item?.id]);
 
   if (!item) return null;
@@ -82,7 +84,7 @@ export function QuickViewModal({
         </button>
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 items-start">
-          {/* Left Dual-Angle + 360° 3D Gallery (5 Cols) */}
+          {/* Left: Image Gallery + 360° (5 Cols) */}
           <div className="md:col-span-5 space-y-3">
             <div className="relative aspect-[4/5] bg-[#ECD8D6] border border-[#2B1C1E]/12 overflow-hidden">
               {show3D ? (
@@ -109,7 +111,7 @@ export function QuickViewModal({
                 </>
               ) : (
                 <img
-                  src={qvImageIdx === 0 ? item.image1 : item.image2}
+                  src={[item.image1, item.image2, item.image3, item.image4][localImgIdx] || item.image1}
                   alt={item.name}
                   onError={handleImgError}
                   style={{
@@ -119,50 +121,41 @@ export function QuickViewModal({
                 />
               )}
             </div>
-            <div className="grid grid-cols-3 gap-2.5">
-              {[
-                { idx: 0 as const, label: '01 Studio', src: item.image1 },
-                { idx: 1 as const, label: '02 Worn', src: item.image2 }
-              ].map((view) => (
-                <button
-                  key={view.idx}
-                  type="button"
-                  onClick={() => {
-                    setShow3D(false);
-                    onSelectImageIdx(view.idx);
-                  }}
-                  className={`p-2 border text-left flex items-center space-x-2 transition-colors ${
-                    !show3D && qvImageIdx === view.idx
-                      ? 'border-[#2B1C1E] bg-[#F0DFDD]'
-                      : 'border-[#2B1C1E]/15 hover:border-[#2B1C1E]/40'
-                  }`}
-                >
-                  <img
-                    src={view.src}
-                    alt={view.label}
-                    onError={handleImgError}
-                    className="w-8 h-9 object-cover flex-shrink-0"
-                  />
-                  <span className="text-[9px] uppercase tracking-[0.14em] leading-tight">
-                    {view.label}
-                  </span>
-                </button>
-              ))}
+
+            {/* Thumbnails: up to 4 real images + 360° tab */}
+            <div className="grid grid-cols-5 gap-2">
+              {([item.image1, item.image2, item.image3, item.image4] as (string | undefined)[])
+                .filter(Boolean)
+                .map((src, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => { setShow3D(false); setLocalImgIdx(idx); onSelectImageIdx(idx < 2 ? (idx as 0 | 1) : 0); }}
+                    className={`aspect-square border overflow-hidden transition-colors ${
+                      !show3D && localImgIdx === idx
+                        ? 'border-[#2B1C1E]'
+                        : 'border-[#2B1C1E]/15 hover:border-[#2B1C1E]/40'
+                    }`}
+                  >
+                    <img
+                      src={src}
+                      alt={`View ${idx + 1}`}
+                      onError={handleImgError}
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
+                ))}
               <button
                 type="button"
                 onClick={() => setShow3D(true)}
-                className={`p-2 border text-left flex items-center space-x-2 transition-colors ${
+                className={`aspect-square border flex flex-col items-center justify-center gap-1 transition-colors ${
                   show3D
                     ? 'border-[#2B1C1E] bg-[#F0DFDD]'
                     : 'border-[#2B1C1E]/15 hover:border-[#2B1C1E]/40'
                 }`}
               >
-                <span className="w-8 h-9 bg-[#2B1C1E]/8 border border-[#2B1C1E]/15 flex items-center justify-center flex-shrink-0">
-                  <Move3d className="w-4 h-4 text-[#9A6058]" />
-                </span>
-                <span className="text-[9px] uppercase tracking-[0.14em] leading-tight">
-                  03 360° 3D
-                </span>
+                <Move3d className="w-4 h-4 text-[#9A6058]" />
+                <span className="text-[8px] uppercase tracking-[0.12em]">360°</span>
               </button>
             </div>
           </div>

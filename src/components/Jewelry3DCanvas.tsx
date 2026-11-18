@@ -244,11 +244,37 @@ export function Jewelry3DCanvas({
     controls.enableDamping = true;
     controls.dampingFactor = 0.06;
     controls.enablePan = false;
-    controls.enableZoom = false; // Keeps page vertical scroll silky smooth
+    controls.enableZoom = false;
     controls.minPolarAngle = 0.35;
     controls.maxPolarAngle = Math.PI * 0.78;
     controls.target.set(0, 0.12, 0);
+    // Mobile: 1-finger scrolls the page, 2-finger rotates the model
+    controls.touches = {
+      ONE: THREE.TOUCH.DOLLY_PAN, // effectively no-op since pan+zoom disabled → falls through to page scroll
+      TWO: THREE.TOUCH.ROTATE
+    };
     controlsRef.current = controls;
+
+    // Let single-finger vertical touch pass through to the page scroller
+    const canvas = renderer.domElement;
+    let touchStartX = 0;
+    let touchStartY = 0;
+    const onTouchStart = (e: TouchEvent) => {
+      if (e.touches.length !== 1) return;
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches.length !== 1) return;
+      const dx = Math.abs(e.touches[0].clientX - touchStartX);
+      const dy = Math.abs(e.touches[0].clientY - touchStartY);
+      // If mostly vertical → let page scroll (don't preventDefault)
+      if (dy > dx) return;
+      // Mostly horizontal → rotate model, block page scroll
+      e.preventDefault();
+    };
+    canvas.addEventListener('touchstart', onTouchStart, { passive: true });
+    canvas.addEventListener('touchmove', onTouchMove, { passive: false });
 
     // Soft studio key + warm rose bounce light
     const keyLight = new THREE.DirectionalLight(0xfff6ec, 2.2);
@@ -340,6 +366,8 @@ export function Jewelry3DCanvas({
 
     return () => {
       window.removeEventListener('resize', handleResize);
+      canvas.removeEventListener('touchstart', onTouchStart);
+      canvas.removeEventListener('touchmove', onTouchMove);
       window.cancelAnimationFrame(rafId);
       controls.dispose();
       roomEnv.dispose();
@@ -386,7 +414,7 @@ export function Jewelry3DCanvas({
     <div
       ref={containerRef}
       aria-label={`Interactive 360-degree 3D ${category} viewer`}
-      className={`${className} w-full cursor-grab active:cursor-grabbing select-none touch-pan-y`}
+      className={`${className} w-full cursor-grab active:cursor-grabbing select-none touch-auto`}
     />
   );
 }

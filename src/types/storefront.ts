@@ -54,6 +54,8 @@ export interface Product {
   description: string;
   image1: string;
   image2: string;
+  image3?: string;
+  image4?: string;
   sizes: string[];
   sizeLabel: string;
   stackable?: boolean;
