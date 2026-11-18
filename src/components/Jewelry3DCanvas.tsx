@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { Category, MetalFinish } from '../types/storefront';
 
 interface Jewelry3DCanvasProps {
@@ -12,6 +13,7 @@ interface Jewelry3DCanvasProps {
   resetSignal?: number;
   className?: string;
   imageUrl?: string;
+  modelUrl?: string;
 }
 
 const METAL_TINTS: Record<MetalFinish, { color: number; roughness: number }> = {
@@ -44,12 +46,13 @@ function createBrilliantDiamond(radius: number, material: THREE.Material): THREE
   return gem;
 }
 
-/** Builds procedural fine-jewellery geometry or realistic transparent 3D showcase. */
+/** Builds procedural fine-jewellery geometry or realistic 3D GLB showcase. */
 function buildJewelrySculpture(
   category: Exclude<Category, 'All'>,
   alloyMat: THREE.MeshPhysicalMaterial,
   diamondMat: THREE.MeshPhysicalMaterial,
-  imageUrl?: string
+  imageUrl?: string,
+  modelUrl?: string
 ): THREE.Group {
   const root = new THREE.Group();
 
@@ -162,56 +165,76 @@ function buildJewelrySculpture(
     return root;
   }
 
-  // Real Transparent Atelier Necklace
-  const textureLoader = new THREE.TextureLoader();
-  const texture = textureLoader.load(imageUrl || '/3d image/ocean vibe.png');
-  texture.colorSpace = THREE.SRGBColorSpace;
-  texture.generateMipmaps = true;
-  texture.minFilter = THREE.LinearMipmapLinearFilter;
+  // Necklaces: Load Real 3D GLB Model (with seamless fallback)
+  const glbPath = modelUrl || '/models/ocean-vibe.glb';
+  const gltfLoader = new GLTFLoader();
 
-  const w = 2.25;
-  const h = 2.18;
+  gltfLoader.load(
+    glbPath,
+    (gltf) => {
+      const model = gltf.scene;
+      model.traverse((child) => {
+        if ((child as THREE.Mesh).isMesh) {
+          const mesh = child as THREE.Mesh;
+          mesh.castShadow = true;
+          mesh.receiveShadow = true;
+        }
+      });
+      model.position.set(0, 0.08, 0);
+      root.add(model);
+    },
+    undefined,
+    () => {
+      // Fallback: 2.5D double-sided transparent plane
+      const textureLoader = new THREE.TextureLoader();
+      const texture = textureLoader.load(imageUrl || '/3d image/ocean vibe.png');
+      texture.colorSpace = THREE.SRGBColorSpace;
+      texture.generateMipmaps = true;
+      texture.minFilter = THREE.LinearMipmapLinearFilter;
 
-  // Front facing plane
-  const frontGeo = new THREE.PlaneGeometry(w, h);
-  const frontMat = new THREE.MeshPhysicalMaterial({
-    map: texture,
-    transparent: true,
-    alphaTest: 0.04,
-    roughness: 0.25,
-    metalness: 0.15,
-    clearcoat: 0.5,
-    clearcoatRoughness: 0.1,
-    side: THREE.FrontSide,
-    depthWrite: true
-  });
-  const frontMesh = new THREE.Mesh(frontGeo, frontMat);
-  frontMesh.position.z = 0.015;
-  frontMesh.castShadow = true;
-  root.add(frontMesh);
+      const w = 2.25;
+      const h = 2.18;
 
-  // Back facing plane (mirrored UVs so it looks oriented correctly from reverse)
-  const backGeo = new THREE.PlaneGeometry(w, h);
-  const uvs = backGeo.attributes.uv;
-  for (let i = 0; i < uvs.count; i++) {
-    uvs.setX(i, 1 - uvs.getX(i));
-  }
-  uvs.needsUpdate = true;
+      const frontGeo = new THREE.PlaneGeometry(w, h);
+      const frontMat = new THREE.MeshPhysicalMaterial({
+        map: texture,
+        transparent: true,
+        alphaTest: 0.04,
+        roughness: 0.25,
+        metalness: 0.15,
+        clearcoat: 0.5,
+        clearcoatRoughness: 0.1,
+        side: THREE.FrontSide,
+        depthWrite: true
+      });
+      const frontMesh = new THREE.Mesh(frontGeo, frontMat);
+      frontMesh.position.z = 0.015;
+      frontMesh.castShadow = true;
+      root.add(frontMesh);
 
-  const backMat = new THREE.MeshPhysicalMaterial({
-    map: texture,
-    transparent: true,
-    alphaTest: 0.04,
-    roughness: 0.3,
-    metalness: 0.15,
-    clearcoat: 0.35,
-    clearcoatRoughness: 0.15,
-    side: THREE.BackSide,
-    depthWrite: true
-  });
-  const backMesh = new THREE.Mesh(backGeo, backMat);
-  backMesh.position.z = -0.015;
-  root.add(backMesh);
+      const backGeo = new THREE.PlaneGeometry(w, h);
+      const uvs = backGeo.attributes.uv;
+      for (let i = 0; i < uvs.count; i++) {
+        uvs.setX(i, 1 - uvs.getX(i));
+      }
+      uvs.needsUpdate = true;
+
+      const backMat = new THREE.MeshPhysicalMaterial({
+        map: texture,
+        transparent: true,
+        alphaTest: 0.04,
+        roughness: 0.3,
+        metalness: 0.15,
+        clearcoat: 0.35,
+        clearcoatRoughness: 0.15,
+        side: THREE.BackSide,
+        depthWrite: true
+      });
+      const backMesh = new THREE.Mesh(backGeo, backMat);
+      backMesh.position.z = -0.015;
+      root.add(backMesh);
+    }
+  );
 
   root.position.set(0, 0.08, 0);
   return root;
@@ -228,7 +251,8 @@ export function Jewelry3DCanvas({
   loupeZoom,
   resetSignal = 0,
   className = 'h-[420px]',
-  imageUrl = '/3d image/ocean vibe.png'
+  imageUrl = '/3d image/ocean vibe.png',
+  modelUrl = '/models/ocean-vibe.glb'
 }: Jewelry3DCanvasProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const alloyMatRef = useRef<THREE.MeshPhysicalMaterial | null>(null);
@@ -358,7 +382,7 @@ export function Jewelry3DCanvas({
       flatShading: true
     });
 
-    const sculpture = buildJewelrySculpture(category, alloyMat, diamondMat, imageUrl);
+    const sculpture = buildJewelrySculpture(category, alloyMat, diamondMat, imageUrl, modelUrl);
     scene.add(sculpture);
 
     let rafId = 0;
@@ -416,7 +440,7 @@ export function Jewelry3DCanvas({
       diamondMat.dispose();
       renderer.dispose();
     };
-  }, [category, imageUrl]);
+  }, [category, imageUrl, modelUrl]);
 
   // Real-time alloy material tinting without recreating WebGL scene
   useEffect(() => {
