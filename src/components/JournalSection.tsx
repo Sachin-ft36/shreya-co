@@ -1,13 +1,52 @@
-import { ArrowUpRight, Instagram } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { ArrowUpRight, Film, Instagram } from 'lucide-react';
 import {
   INSTAGRAM_HANDLE,
   INSTAGRAM_URL,
-  JOURNAL_ARTICLES,
-  PRODUCTS
+  JOURNAL_ARTICLES
 } from '../data/catalog';
 import { useRevealOnScroll } from '../hooks/useRevealOnScroll';
 import { JournalArticle } from '../types/storefront';
 import { handleImgError } from '../utils/pricing';
+
+interface InstagramPostItem {
+  id: string;
+  mediaUrl: string;
+  permalink: string;
+  mediaType: 'IMAGE' | 'VIDEO' | 'CAROUSEL_ALBUM';
+  caption: string;
+}
+
+const DEFAULT_FEED_POSTS: InstagramPostItem[] = [
+  {
+    id: 'post-1',
+    mediaUrl: '/product/Ocean vibes necklace/1.jpeg',
+    permalink: 'https://www.instagram.com/shreyaco.1/',
+    mediaType: 'IMAGE',
+    caption: 'Ocean Vibes Handcrafted Pendant'
+  },
+  {
+    id: 'post-2',
+    mediaUrl: '/product/Scarf Pearl Necklace/1.jpeg',
+    permalink: 'https://www.instagram.com/shreyaco.1/reels/',
+    mediaType: 'VIDEO',
+    caption: 'Scarf Pearl Necklace Drape Styling Reel'
+  },
+  {
+    id: 'post-3',
+    mediaUrl: '/product/Butterfly bliss necklace/1.jpeg',
+    permalink: 'https://www.instagram.com/shreyaco.1/',
+    mediaType: 'IMAGE',
+    caption: 'Butterfly Bliss Fine Silver Chain'
+  },
+  {
+    id: 'post-4',
+    mediaUrl: '/product/Mouse charm necklace/1.jpeg',
+    permalink: 'https://www.instagram.com/shreyaco.1/reels/',
+    mediaType: 'VIDEO',
+    caption: 'Artisan Finishing Reel from Prayagraj'
+  }
+];
 
 interface JournalSectionProps {
   onSelectArticle: (article: JournalArticle) => void;
@@ -16,6 +55,37 @@ interface JournalSectionProps {
 /** Editorial 2-column craftsmanship journal cards opening full monographs. */
 export function JournalSection({ onSelectArticle }: JournalSectionProps) {
   const { ref, visible } = useRevealOnScroll<HTMLElement>(0.12);
+  const [feedPosts, setFeedPosts] = useState<InstagramPostItem[]>(DEFAULT_FEED_POSTS);
+
+  // Automatically fetch live 4 recent posts/reels if a live feed URL is provided
+  useEffect(() => {
+    const feedUrl = ((import.meta as any).env?.VITE_INSTAGRAM_FEED_URL as string | undefined)?.trim();
+    if (!feedUrl) return;
+
+    fetch(feedUrl)
+      .then((res) => {
+        if (!res.ok) throw new Error('Feed response error');
+        return res.json();
+      })
+      .then((data) => {
+        const rawItems = Array.isArray(data) ? data : data.data || data.items || [];
+        if (Array.isArray(rawItems) && rawItems.length > 0) {
+          const formatted: InstagramPostItem[] = rawItems.slice(0, 4).map((p: any, i: number) => ({
+            id: p.id || `feed-${i}`,
+            mediaUrl: p.mediaUrl || p.thumbnailUrl || p.media_url || p.images?.standard_resolution?.url || '',
+            permalink: p.permalink || p.link || INSTAGRAM_URL,
+            mediaType: (p.mediaType || p.media_type || '').toUpperCase() === 'VIDEO' ? 'VIDEO' : 'IMAGE',
+            caption: p.caption || 'Live from @shreyaco.1'
+          }));
+          if (formatted.length > 0) {
+            setFeedPosts(formatted);
+          }
+        }
+      })
+      .catch(() => {
+        // Quiet fallback to default posts
+      });
+  }, []);
 
   return (
     <section
@@ -98,27 +168,43 @@ export function JournalSection({ onSelectArticle }: JournalSectionProps) {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {PRODUCTS.slice(0, 4).map((piece) => (
+          {feedPosts.map((post) => (
             <a
-              key={piece.id}
-              href={INSTAGRAM_URL}
+              key={post.id}
+              href={post.permalink}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`View ${piece.name} on Instagram ${INSTAGRAM_HANDLE}`}
-              className="group relative aspect-square bg-[#ECD8D6] border border-[#2B1C1E]/12 overflow-hidden"
+              aria-label={`View ${post.caption} on Instagram ${INSTAGRAM_HANDLE}`}
+              className="group relative aspect-square bg-[#ECD8D6] border border-[#2B1C1E]/12 overflow-hidden shadow-sm"
             >
+              {/* Reel indicator badge */}
+              {post.mediaType === 'VIDEO' && (
+                <div className="absolute top-2.5 right-2.5 z-10 bg-[#2B1C1E]/80 backdrop-blur-sm text-[#FAF1F0] px-2 py-0.5 text-[8px] uppercase tracking-[0.16em] flex items-center gap-1 rounded pointer-events-none">
+                  <Film className="w-2.5 h-2.5 text-[#D9A79C]" />
+                  <span>Reel</span>
+                </div>
+              )}
+
               <img
-                src={piece.image1}
-                alt={`${piece.name} — ${INSTAGRAM_HANDLE}`}
+                src={post.mediaUrl}
+                alt={post.caption}
                 loading="lazy"
                 onError={handleImgError}
                 className="w-full h-full object-cover ao-ease-image group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-[#2B1C1E]/0 group-hover:bg-[#2B1C1E]/35 transition-colors flex items-end justify-between p-3 opacity-0 group-hover:opacity-100">
-                <span className="text-[9px] uppercase tracking-[0.2em] text-[#FAF1F0]">
-                  {INSTAGRAM_HANDLE}
-                </span>
-                <ArrowUpRight className="w-3.5 h-3.5 text-[#FAF1F0]" />
+
+              {/* Hover overlay with direct Instagram link */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#2B1C1E]/85 via-[#2B1C1E]/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3.5">
+                <p className="text-[10px] text-[#FAF1F0] line-clamp-2 font-light leading-snug mb-1.5">
+                  {post.caption}
+                </p>
+                <div className="flex items-center justify-between text-[9px] uppercase tracking-[0.18em] text-[#D9A79C] font-medium">
+                  <span className="flex items-center gap-1">
+                    <Instagram className="w-3 h-3" />
+                    <span>{post.mediaType === 'VIDEO' ? 'Watch Reel' : 'View Post'}</span>
+                  </span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-[#FAF1F0]" />
+                </div>
               </div>
             </a>
           ))}
